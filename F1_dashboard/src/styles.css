@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+/* Design tokens: dark "Race Night" theme + F1 team accent colors */
+:root {
+  --page-plane: #0a0a0a;
+  --surface-1: #161616;
+  --surface-2: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --border-hairline: rgba(255, 255, 255, 0.10);
+  --f1-red: #e10600;
+
+  --team-red_bull: #4a5fc0;
+  --team-ferrari: #dc0000;
+  --team-mercedes: #00a896;
+  --team-mclaren: #d96a00;
+  --team-aston_martin: #229971;
+  --team-alpine: #b84090;
+  --team-williams: #339ae0;
+  --team-rb: #9b3fd1;
+  --team-audi: #c13a52;
+  --team-cadillac: #ad8c1f;
+  --team-haas: #b06a38;
+  --team-default: #5a5a5a;
+
+  color-scheme: dark;
+  --bs-body-bg: var(--page-plane);
+  --bs-body-color: var(--text-primary);
+  --bs-secondary-color: var(--text-secondary);
+  --bs-border-color: var(--border-hairline);
+  --bs-card-bg: var(--surface-1);
+  --bs-tertiary-bg: var(--surface-2);
+}
+
+body {
+  background-color: var(--page-plane);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(225, 6, 0, 0.16), transparent 70%),
+    radial-gradient(ellipse 700px 400px at 100% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.section-heading {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-heading::before {
+  content: '';
+  width: 40px;
+  height: 3px;
+  background: var(--f1-red);
+  border-radius: 2px;
+}
+
+.card {
+  background-color: var(--surface-1);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 40%);
+  border: 1px solid var(--border-hairline);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.team-accent {
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-primary);
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.06);
+  --bs-table-border-color: var(--border-hairline);
+}
+
+.list-group-item {
+  background-color: var(--surface-1);
+  border-color: var(--border-hairline);
+  color: var(--text-primary);
+}

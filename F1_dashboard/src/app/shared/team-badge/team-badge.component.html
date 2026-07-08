@@ -1,0 +1,16 @@
+<div *ngIf="logoUrl; else fallback"
+     class="team-badge-chip"
+     [style.width.px]="size"
+     [style.height.px]="size">
+  <img [src]="logoUrl" [alt]="name" class="team-badge-img">
+</div>
+
+<ng-template #fallback>
+  <div class="team-badge-fallback"
+       [style.width.px]="size"
+       [style.height.px]="size"
+       [style.background-color]="color"
+       [style.font-size.px]="size * 0.4">
+    {{ initials }}
+  </div>
+</ng-template>

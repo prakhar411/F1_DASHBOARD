@@ -1,0 +1,164 @@
+/* Hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(ellipse 600px 320px at 50% 20%, rgba(225, 6, 0, 0.22), transparent 70%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-stripe {
+  width: 72px;
+  height: 5px;
+  background: linear-gradient(90deg, #e10600, #ff5c4d);
+  border-radius: 3px;
+}
+
+.hero-title {
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  text-shadow: 0 4px 40px rgba(225, 6, 0, 0.25);
+}
+
+.value-props li {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.cta-glow {
+  box-shadow: 0 8px 24px rgba(225, 6, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(225, 6, 0, 0.5);
+}
+
+/* Next race card */
+.next-race-card {
+  border-top: 3px solid #e10600;
+  transition: box-shadow 0.3s ease;
+}
+
+.next-race-card.race-live {
+  box-shadow: 0 0 32px rgba(225, 6, 0, 0.45);
+}
+
+.digit-tile {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  min-width: 72px;
+}
+
+.digit {
+  font-size: 2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.digit-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.live-flag .flag-emoji {
+  font-size: 2rem;
+  display: inline-block;
+  animation: flag-drop 0.6s ease-out;
+}
+
+@keyframes flag-drop {
+  0% { transform: translateY(-24px) rotate(-10deg); opacity: 0; }
+  100% { transform: translateY(0) rotate(0); opacity: 1; }
+}
+
+/* Podium */
+.podium-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.podium-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 190px;
+  text-align: center;
+}
+
+.podium-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.podium-stand {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+.stand-p1 { height: 110px; }
+.stand-p2 { height: 80px; }
+.stand-p3 { height: 56px; }
+
+/* Team strip */
+.team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 0.35rem 0.95rem 0.35rem 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Trust badge */
+.trust-badge {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}

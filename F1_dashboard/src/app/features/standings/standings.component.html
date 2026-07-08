@@ -1,2 +1,84 @@
-<h1>Standings</h1>
-<p class="text-muted">Driver and constructor standings are coming in Phase 1.</p>
+<h1 class="mb-4">Standings</h1>
+
+<div *ngIf="loading" class="text-muted">Loading standings&hellip;</div>
+
+<div *ngIf="!loading">
+  <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs mb-3">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Drivers</a>
+      <ng-template ngbNavContent>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Driver</th>
+                <th>Team</th>
+                <th>Nationality</th>
+                <th>Wins</th>
+                <th>Points</th>
+                <th>Best Lap (Season)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of driverStandings">
+                <td>{{ d.position }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
+                                        [constructorId]="d.constructorId" [size]="32"></app-driver-avatar>
+                    {{ d.givenName }} {{ d.familyName }} <span class="text-muted">({{ d.code }})</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <app-team-badge [constructorId]="d.constructorId" [name]="d.constructorName" [size]="20"></app-team-badge>
+                    {{ d.constructorName | teamName:d.constructorId }}
+                  </div>
+                </td>
+                <td>{{ d.nationality }}</td>
+                <td>{{ d.wins }}</td>
+                <td class="fw-bold">{{ d.points }}</td>
+                <td>{{ d.seasonBestLapTime || '&mdash;' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Constructors</a>
+      <ng-template ngbNavContent>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>Nationality</th>
+                <th>Wins</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of constructorStandings">
+                <td>{{ c.position }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <app-team-badge [constructorId]="c.constructorId" [name]="c.name" [size]="20"></app-team-badge>
+                    {{ c.name | teamName:c.constructorId }}
+                  </div>
+                </td>
+                <td>{{ c.nationality }}</td>
+                <td>{{ c.wins }}</td>
+                <td class="fw-bold">{{ c.points }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav"></div>
+</div>
