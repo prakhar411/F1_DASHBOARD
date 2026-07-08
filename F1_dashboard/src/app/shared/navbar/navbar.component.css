@@ -1,0 +1,24 @@
+.app-navbar {
+  background-color: #0a0a0a;
+  border-bottom: 3px solid #e10600;
+}
+
+.navbar-brand {
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-link {
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -2px;
+  height: 2px;
+  background: #e10600;
+}

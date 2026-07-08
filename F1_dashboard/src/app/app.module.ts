@@ -13,6 +13,10 @@ import { DriversComponent } from './features/drivers/drivers.component';
 import { TeamsComponent } from './features/teams/teams.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { SignupComponent } from './features/auth/signup/signup.component';
+import { CalendarComponent } from './features/calendar/calendar.component';
+import { TeamBadgeComponent } from './shared/team-badge/team-badge.component';
+import { TeamNamePipe } from './shared/pipes/team-name.pipe';
+import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { SignupComponent } from './features/auth/signup/signup.component';
     DriversComponent,
     TeamsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    CalendarComponent,
+    TeamBadgeComponent,
+    TeamNamePipe,
+    DriverAvatarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,25 @@
+.team-badge-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f3f0;
+  border-radius: 50%;
+  padding: 15%;
+  flex: none;
+}
+
+.team-badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.team-badge-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  flex: none;
+}

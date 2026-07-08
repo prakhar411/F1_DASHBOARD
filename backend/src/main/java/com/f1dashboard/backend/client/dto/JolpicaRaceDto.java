@@ -1,0 +1,25 @@
+package com.f1dashboard.backend.client.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JolpicaRaceDto {
+    private String season;
+    private String round;
+    private String raceName;
+    private String date;
+    private String time;
+
+    @JsonProperty("Circuit")
+    private JolpicaCircuitDto circuit;
+
+    @JsonProperty("Results")
+    private List<JolpicaResultDto> results;
+}

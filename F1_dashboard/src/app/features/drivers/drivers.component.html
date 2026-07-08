@@ -1,2 +1,26 @@
-<h1>Drivers</h1>
-<p class="text-muted">The driver grid and profiles are coming in Phase 1 &amp; 3.</p>
+<h1 class="mb-4">Drivers</h1>
+
+<div *ngIf="loading" class="text-muted">Loading drivers&hellip;</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+  <div class="col" *ngFor="let d of drivers">
+    <div class="card h-100 team-accent" [style.border-left-color]="teamColor(d.constructorId)">
+      <div class="card-body d-flex gap-3">
+        <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
+                            [constructorId]="d.constructorId" [size]="56"></app-driver-avatar>
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title mb-1">{{ d.givenName }} {{ d.familyName }}</h5>
+            <span class="badge bg-danger" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-1" *ngIf="d.constructorName">
+            <app-team-badge [constructorId]="d.constructorId" [name]="d.constructorName" [size]="22"></app-team-badge>
+            <span class="text-secondary">{{ d.constructorName | teamName:d.constructorId }}</span>
+          </div>
+          <p class="text-muted mb-1" *ngIf="d.code">{{ d.code }}</p>
+          <p class="card-text mb-0" *ngIf="d.nationality">{{ d.nationality }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

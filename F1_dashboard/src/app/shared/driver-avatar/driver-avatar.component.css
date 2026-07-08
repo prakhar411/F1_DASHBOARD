@@ -1,0 +1,19 @@
+.driver-avatar-img {
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid;
+  flex: none;
+  background: var(--surface-2);
+}
+
+.driver-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font-weight: 700;
+  flex: none;
+}

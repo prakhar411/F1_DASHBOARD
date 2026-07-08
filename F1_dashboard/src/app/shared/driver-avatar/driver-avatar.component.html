@@ -1,0 +1,17 @@
+<img *ngIf="photoUrl; else fallback"
+     [src]="photoUrl"
+     [alt]="givenName + ' ' + familyName"
+     class="driver-avatar-img"
+     [style.width.px]="size"
+     [style.height.px]="size"
+     [style.border-color]="color">
+
+<ng-template #fallback>
+  <div class="driver-avatar-fallback"
+       [style.width.px]="size"
+       [style.height.px]="size"
+       [style.border-color]="color"
+       [style.font-size.px]="size * 0.35">
+    {{ initials }}
+  </div>
+</ng-template>
