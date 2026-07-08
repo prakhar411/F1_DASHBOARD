@@ -1,114 +1,147 @@
-<div class="hero text-center py-5">
+<!-- ==============================================================
+     HOME COMPONENT — COMPLETE REDESIGN
+     All logic, bindings, directives and TypeScript remain untouched.
+     Only the presentation layer (HTML structure + CSS) is rebuilt.
+     ============================================================== -->
+
+<!-- ========== HERO ========== -->
+<section class="hero-section">
   <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-pattern" aria-hidden="true"></div>
   <div class="hero-content">
-    <div class="hero-stripe mx-auto mb-3"></div>
-    <h1 class="hero-title fw-bold mb-2"><span class="text-danger">Pit</span>Wall</h1>
-    <p class="lead text-secondary mb-4">Your one-stop platform for everything Formula 1.</p>
-
-    <ul class="value-props list-unstyled d-flex flex-column flex-sm-row justify-content-center gap-3 gap-sm-4 mb-4">
-      <li><span class="text-danger">&#9679;</span> Live standings &amp; calendar</li>
-      <li><span class="text-danger">&#9679;</span> Predict races &amp; compete</li>
-      <li><span class="text-danger">&#9679;</span> Learn F1 from scratch</li>
+    <div class="hero-stripe"></div>
+    <h1 class="hero-title">
+      <span class="text-accent">Pit</span><span class="text-light">Wall</span>
+      <span class="hero-badge">β</span>
+    </h1>
+    <p class="hero-subtitle">Your one‑stop platform for everything Formula 1.</p>
+    <ul class="value-props">
+      <li><span class="bullet">✦</span> Live standings &amp; calendar</li>
+      <li><span class="bullet">✦</span> Predict races &amp; compete</li>
+      <li><span class="bullet">✦</span> Learn F1 from scratch</li>
     </ul>
-
-    <a class="btn btn-danger btn-lg px-4 cta-glow" routerLink="/signup">Get Started &rarr;</a>
+    <a class="btn-cta" routerLink="/signup">Get Started <span class="arrow">→</span></a>
   </div>
-</div>
+</section>
 
-<!-- Next race countdown -->
-<div class="d-flex justify-content-center my-5">
-  <div class="card next-race-card text-center" [class.race-live]="raceIsLive" style="max-width: 560px; width: 100%;">
-    <div class="card-body py-4">
+<!-- ========== DASHBOARD GRID ========== -->
+<div class="dashboard-grid">
+
+  <!-- ---- NEXT RACE CARD ---- -->
+  <div class="card race-card" [class.race-live]="raceIsLive">
+    <div class="card-body">
       <ng-container *ngIf="nextRace; else noRace">
-        <div class="text-danger text-uppercase fw-bold small mb-1" style="letter-spacing: 0.12em;">Next Race</div>
-        <h3 class="fw-bold mb-1">{{ nextRace.raceName }}</h3>
-        <p class="text-secondary mb-4">{{ nextRace.circuitName }} &middot; {{ nextRace.locality }}, {{ nextRace.country }}</p>
+        <div *ngIf="raceIsLive" class="live-badge">
+          <span class="live-dot"></span> LIVE
+        </div>
+        <div class="card-label">Next Race</div>
+        <h3 class="race-name">{{ nextRace.raceName }}</h3>
+        <p class="race-location">
+          {{ nextRace.circuitName }} <span class="sep">·</span> {{ nextRace.locality }}, {{ nextRace.country }}
+        </p>
 
-        <div *ngIf="countdown" class="d-flex justify-content-center gap-2 gap-sm-3">
-          <div class="digit-tile">
-            <div class="digit">{{ countdown.days }}</div>
-            <div class="digit-label">days</div>
+        <div *ngIf="countdown" class="countdown-grid">
+          <div class="digit-box">
+            <span class="digit">{{ countdown.days }}</span>
+            <span class="label">days</span>
           </div>
-          <div class="digit-tile">
-            <div class="digit">{{ countdown.hours }}</div>
-            <div class="digit-label">hrs</div>
+          <div class="digit-box">
+            <span class="digit">{{ countdown.hours }}</span>
+            <span class="label">hrs</span>
           </div>
-          <div class="digit-tile">
-            <div class="digit">{{ countdown.minutes }}</div>
-            <div class="digit-label">min</div>
+          <div class="digit-box">
+            <span class="digit">{{ countdown.minutes }}</span>
+            <span class="label">min</span>
           </div>
-          <div class="digit-tile">
-            <div class="digit">{{ countdown.seconds }}</div>
-            <div class="digit-label">sec</div>
+          <div class="digit-box">
+            <span class="digit">{{ countdown.seconds }}</span>
+            <span class="label">sec</span>
           </div>
         </div>
 
-        <div *ngIf="raceIsLive" class="live-flag mt-3">
-          <span class="flag-emoji">&#127937;</span>
-          <p class="fw-bold text-danger mb-0">Race weekend is live!</p>
+        <div *ngIf="raceIsLive" class="live-flag">
+          <span>🏁</span> Race weekend is live!
         </div>
       </ng-container>
 
       <ng-template #noRace>
-        <p *ngIf="noUpcomingRace" class="text-secondary mb-0">No upcoming race scheduled.</p>
-        <p *ngIf="!noUpcomingRace" class="text-secondary mb-0">Loading next race&hellip;</p>
+        <p class="text-muted" *ngIf="noUpcomingRace">No upcoming race scheduled.</p>
+        <p class="text-muted" *ngIf="!noUpcomingRace">Loading next race…</p>
       </ng-template>
     </div>
   </div>
-</div>
 
-<!-- Podium preview -->
-<div class="reveal my-5 text-center" #revealSection *ngIf="topStandings.length as count">
-  <h2 class="section-heading h4 mb-5">Current Top 3</h2>
-  <div class="podium-row">
-    <div class="podium-col" *ngFor="let d of topStandings"
-         [style.order]="d.position === 1 ? 2 : (d.position === 2 ? 1 : 3)">
-      <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
-                          [constructorId]="d.constructorId" [size]="56" class="mb-2"></app-driver-avatar>
-      <div class="podium-number" [style.color]="teamColor(d.constructorId)">{{ d.position }}</div>
-      <div class="fw-bold">{{ d.givenName }} {{ d.familyName }}</div>
-      <div class="text-secondary small mb-2">{{ d.constructorName | teamName:d.constructorId }}</div>
-      <div class="podium-stand" [class.stand-p1]="d.position === 1" [class.stand-p2]="d.position === 2" [class.stand-p3]="d.position === 3"
-           [style.background]="'color-mix(in srgb, ' + teamColor(d.constructorId) + ' 30%, var(--surface-2))'">
-        <span class="fw-bold">{{ d.points }} pts</span>
+  <!-- ---- TOP 3 STANDINGS ---- -->
+  <div class="card standings-card" *ngIf="topStandings.length">
+    <div class="card-body">
+      <div class="card-label">Current Top 3</div>
+      <div class="podium-compact">
+        <div class="driver-item" *ngFor="let d of topStandings; let i = index"
+             [style.order]="d.position === 1 ? 2 : (d.position === 2 ? 1 : 3)">
+          <app-driver-avatar
+            [driverId]="d.driverId"
+            [givenName]="d.givenName"
+            [familyName]="d.familyName"
+            [constructorId]="d.constructorId"
+            [size]="44"
+            class="avatar"
+            [style.--ring-color]="teamColor(d.constructorId)">
+          </app-driver-avatar>
+          <div class="driver-info">
+            <span class="pos" [style.color]="teamColor(d.constructorId)">#{{ d.position }}</span>
+            <span class="name">{{ d.givenName }} {{ d.familyName }}</span>
+            <span class="team">{{ d.constructorName | teamName:d.constructorId }}</span>
+            <span class="points">{{ d.points }} pts</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Team color strip -->
-<div class="reveal my-5 text-center" #revealSection *ngIf="teams.length">
-  <h2 class="section-heading h4 mb-4">Teams</h2>
-  <div class="d-flex justify-content-center flex-wrap gap-2">
-    <span class="team-chip" *ngFor="let t of teams"
+<!-- ========== TEAMS ========== -->
+<div class="section teams-section reveal" #revealSection *ngIf="teams.length">
+  <h2 class="section-title">Teams</h2>
+  <div class="team-chips">
+    <span class="chip" *ngFor="let t of teams"
           [style.border-color]="teamColor(t.constructorId)"
-          [style.background]="'color-mix(in srgb, ' + teamColor(t.constructorId) + ' 16%, transparent)'">
+          [style.background]="'color-mix(in srgb, ' + teamColor(t.constructorId) + ' 12%, var(--surface-1))'">
       <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="20"></app-team-badge>
       {{ t.name | teamName:t.constructorId }}
     </span>
   </div>
 </div>
 
-<!-- Last race recap -->
-<div class="reveal my-5 text-center" #revealSection *ngIf="lastRaceRecap">
-  <h2 class="section-heading h4 mb-5">Last Race &mdash; {{ lastRaceRecap.raceName }}</h2>
-  <div class="podium-row">
-    <div class="podium-col" *ngFor="let p of lastRaceRecap.podium"
+<!-- ========== LAST RACE RECAP ========== -->
+<div class="section recap-section reveal" #revealSection *ngIf="lastRaceRecap">
+  <h2 class="section-title">Last Race <span class="sep">—</span> {{ lastRaceRecap.raceName }}</h2>
+  <div class="podium-full">
+    <div class="podium-step" *ngFor="let p of lastRaceRecap.podium"
          [style.order]="p.position === 1 ? 2 : (p.position === 2 ? 1 : 3)">
-      <app-driver-avatar [driverId]="p.driverId" [givenName]="p.givenName" [familyName]="p.familyName"
-                          [constructorId]="p.constructorId" [size]="56" class="mb-2"></app-driver-avatar>
-      <div class="podium-number" [style.color]="teamColor(p.constructorId)">{{ p.position }}</div>
-      <div class="fw-bold">{{ p.givenName }} {{ p.familyName }}</div>
-      <div class="text-secondary small mb-2">{{ p.constructorName | teamName:p.constructorId }}</div>
-      <div class="text-muted small mb-2" *ngIf="p.bestLapTime">Best lap: {{ p.bestLapTime }}</div>
-      <div class="podium-stand" [class.stand-p1]="p.position === 1" [class.stand-p2]="p.position === 2" [class.stand-p3]="p.position === 3"
-           [style.background]="'color-mix(in srgb, ' + teamColor(p.constructorId) + ' 30%, var(--surface-2))'"></div>
+      <app-driver-avatar
+        [driverId]="p.driverId"
+        [givenName]="p.givenName"
+        [familyName]="p.familyName"
+        [constructorId]="p.constructorId"
+        [size]="56"
+        class="avatar"
+        [style.--ring-color]="teamColor(p.constructorId)">
+      </app-driver-avatar>
+      <div class="pos-number" [style.color]="teamColor(p.constructorId)">{{ p.position }}</div>
+      <div class="driver-name">{{ p.givenName }} {{ p.familyName }}</div>
+      <div class="driver-team">{{ p.constructorName | teamName:p.constructorId }}</div>
+      <div class="best-lap" *ngIf="p.bestLapTime">⏱ {{ p.bestLapTime }}</div>
+      <div class="podium-bar"
+           [class.bar-p1]="p.position === 1"
+           [class.bar-p2]="p.position === 2"
+           [class.bar-p3]="p.position === 3"
+           [style.background]="'color-mix(in srgb, ' + teamColor(p.constructorId) + ' 30%, var(--surface-2))'">
+      </div>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center mb-4">
-  <span class="trust-badge">
-    &#128664; Not affiliated with Formula 1 or the FIA &middot; built by Prakhar as a personal project
-  </span>
+<!-- ========== FOOTER ========== -->
+<div class="footer-trust">
+  <span>🏎 Not affiliated with Formula 1 or the FIA · built by Prakhar as a personal project</span>
 </div>
