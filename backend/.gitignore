@@ -1,0 +1,7 @@
+target/
+*.class
+application-local.yml
+.idea/
+*.iml
+.vscode/
+HELP.md

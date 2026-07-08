@@ -1,0 +1,1 @@
+-- Baseline migration; schema tables are introduced starting Phase 1
