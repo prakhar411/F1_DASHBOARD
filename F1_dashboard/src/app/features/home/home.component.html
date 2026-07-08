@@ -1,1 +1,33 @@
-<p>home works!</p>
+<div class="text-center py-5">
+  <h1 class="display-4 fw-bold">F1 Dashboard</h1>
+  <p class="lead text-muted">Your one-stop platform for everything Formula 1.</p>
+</div>
+
+<div class="d-flex justify-content-center">
+  <div class="card" style="max-width: 400px; width: 100%;">
+    <div class="card-body text-center">
+      <h5 class="card-title">System Status</h5>
+
+      <div *ngIf="health as h; else notReady">
+        <p class="mb-1">
+          Backend:
+          <span class="badge" [class.bg-success]="h.status === 'UP'" [class.bg-danger]="h.status !== 'UP'">
+            {{ h.status }}
+          </span>
+        </p>
+        <p class="mb-1">
+          Database:
+          <span class="badge" [class.bg-success]="h.database === 'UP'" [class.bg-danger]="h.database !== 'UP'">
+            {{ h.database }}
+          </span>
+        </p>
+        <small class="text-muted">Checked at {{ h.timestamp | date:'medium' }}</small>
+      </div>
+
+      <ng-template #notReady>
+        <p *ngIf="!healthError" class="text-muted mb-0">Checking backend status&hellip;</p>
+        <p *ngIf="healthError" class="text-danger mb-0">Could not reach the backend at :8080</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
