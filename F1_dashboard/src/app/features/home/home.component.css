@@ -328,6 +328,31 @@
   font-size: 0.95rem;
   margin-bottom: 1rem;
 }
+.view-track-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.view-track-btn:hover {
+  background: rgba(225, 6, 0, 0.15);
+  border-color: rgba(225, 6, 0, 0.4);
+  transform: translateY(-1px);
+}
+.track-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
 .country-flag {
   margin-right: 0.2rem;
 }
@@ -388,6 +413,7 @@
   width: 100%;
   height: 100%;
   transform: rotate(-90deg);
+  overflow: visible;
 }
 
 .ring-track {

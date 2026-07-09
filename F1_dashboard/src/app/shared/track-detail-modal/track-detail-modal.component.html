@@ -1,0 +1,47 @@
+<div class="tdm">
+
+  <button type="button" class="tdm-close" aria-label="Close" (click)="activeModal.dismiss()">&times;</button>
+
+  <div class="tdm-hero">
+    <img *ngIf="image as img" [src]="img" [alt]="circuitName" class="tdm-track-img">
+  </div>
+
+  <div class="tdm-header">
+    <div class="tdm-eyebrow" *ngIf="raceName">{{ raceName }}</div>
+    <h3 class="tdm-name">{{ circuitName }}</h3>
+    <div class="tdm-location">{{ locality }}, {{ country }}</div>
+  </div>
+
+  <div class="tdm-body">
+    <ng-container *ngIf="detail as d; else noDetail">
+      <div class="tdm-stats">
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.lengthKm }}<span class="stat-unit">km</span></span>
+          <span class="stat-label">Track Length</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.corners }}</span>
+          <span class="stat-label">Corners</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ raceDistanceKm }}<span class="stat-unit">km</span></span>
+          <span class="stat-label">Race Distance &middot; {{ d.laps }} Laps</span>
+        </div>
+        <div class="stat-tile stat-purple">
+          <span class="stat-value">{{ d.drsZones2025 ?? '—' }}</span>
+          <span class="stat-label">DRS Zones (2025)</span>
+        </div>
+      </div>
+      <p class="tdm-note" *ngIf="d.drsZones2025 === null">
+        This circuit is new for the 2026 season — no 2025 DRS reference data exists.
+      </p>
+      <p class="tdm-note" *ngIf="d.drsZones2025 !== null">
+        DRS was retired for the 2026 season, replaced by Active Aerodynamics (Overtake Mode).
+        Zone count shown is the last confirmed figure from 2025, kept as a reference stat.
+      </p>
+    </ng-container>
+    <ng-template #noDetail>
+      <p class="text-muted mb-0">Track details not available for this circuit yet.</p>
+    </ng-template>
+  </div>
+</div>

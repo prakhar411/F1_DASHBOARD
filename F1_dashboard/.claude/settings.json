@@ -67,7 +67,15 @@
       "Bash(taskkill //PID 11684 //F)",
       "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/config/**)",
       "Bash(curl -s \"https://f1-dashboard-backend-7mpa.onrender.com/api/health\" --max-time 30)",
-      "Bash(curl -s -i -H \"Origin: https://pitwall-alpha-three.vercel.app\" \"https://f1-dashboard-backend-7mpa.onrender.com/api/health\" --max-time 30)"
+      "Bash(curl -s -i -H \"Origin: https://pitwall-alpha-three.vercel.app\" \"https://f1-dashboard-backend-7mpa.onrender.com/api/health\" --max-time 30)",
+      "Bash(grep -n \"@ManyToOne\\\\|FetchType\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/entity/DriverStanding.java\")",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/entity/**)",
+      "Bash(taskkill //PID 23704 //F)",
+      "WebFetch(domain:f1gures.app)",
+      "WebFetch(domain:formula-timer.com)",
+      "WebFetch(domain:www.sportskeeda.com)",
+      "WebFetch(domain:www.motorsportmagazine.com)",
+      "WebFetch(domain:motorsporttickets.com)"
     ],
     "additionalDirectories": [
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\response",

@@ -68,9 +68,8 @@ public class DriverDetailServiceImpl implements DriverDetailService {
         DriverCareerStats stats = careerStatsRepository.findById(driverId)
                 .orElseGet(() -> fetchAndCacheCareerStats(driverId, constructor));
 
-        RaceResult lastResult = raceResultRepository
-                .findFirstByDriver_DriverIdOrderByRace_RaceDateDesc(driverId)
-                .orElse(null);
+        List<RaceResult> driverResults = raceResultRepository.findByDriverOrderByRaceDateDesc(driverId);
+        RaceResult lastResult = driverResults.isEmpty() ? null : driverResults.get(0);
 
         return Optional.of(new DriverDetailDto(
                 driver.getDriverId(),
