@@ -65,7 +65,9 @@
       "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/2020/drivers/hamilton/driverstandings/?limit=10\")",
       "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/controller/**)",
       "Bash(taskkill //PID 11684 //F)",
-      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/config/**)"
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/config/**)",
+      "Bash(curl -s \"https://f1-dashboard-backend-7mpa.onrender.com/api/health\" --max-time 30)",
+      "Bash(curl -s -i -H \"Origin: https://pitwall-alpha-three.vercel.app\" \"https://f1-dashboard-backend-7mpa.onrender.com/api/health\" --max-time 30)"
     ],
     "additionalDirectories": [
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\response",
