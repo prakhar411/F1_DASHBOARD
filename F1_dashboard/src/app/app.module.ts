@@ -18,6 +18,7 @@ import { TeamBadgeComponent } from './shared/team-badge/team-badge.component';
 import { TeamNamePipe } from './shared/pipes/team-name.pipe';
 import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.component';
 import { DriverDetailModalComponent } from './shared/driver-detail-modal/driver-detail-modal.component';
+import { TrackDetailModalComponent } from './shared/track-detail-modal/track-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { DriverDetailModalComponent } from './shared/driver-detail-modal/driver-
     TeamBadgeComponent,
     TeamNamePipe,
     DriverAvatarComponent,
-    DriverDetailModalComponent
+    DriverDetailModalComponent,
+    TrackDetailModalComponent
   ],
   imports: [
     BrowserModule,

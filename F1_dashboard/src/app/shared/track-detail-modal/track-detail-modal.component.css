@@ -1,0 +1,125 @@
+.tdm {
+  position: relative;
+  background: #14141a;
+  border-radius: 16px;
+  overflow: hidden;
+  color: var(--text-primary, #fff);
+}
+
+.tdm-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.35);
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tdm-close:hover {
+  background: rgba(225, 6, 0, 0.6);
+}
+
+.tdm-hero {
+  position: relative;
+  background: radial-gradient(ellipse 120% 100% at 50% 30%, rgba(225, 6, 0, 0.10), #0d0d10 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem 1.5rem;
+}
+.tdm-track-img {
+  width: 100%;
+  max-width: 460px;
+  max-height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55));
+}
+
+.tdm-header {
+  padding: 0.2rem 1.5rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.tdm-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e10600;
+  margin-bottom: 0.2rem;
+}
+.tdm-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.15;
+}
+.tdm-location {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #bbb);
+  margin-top: 0.15rem;
+}
+
+.tdm-body {
+  padding: 1.3rem 1.5rem 1.6rem;
+}
+
+.tdm-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+@media (min-width: 420px) {
+  .tdm-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.stat-tile {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 0.9rem 0.5rem;
+  text-align: center;
+}
+.stat-purple {
+  border-color: rgba(160, 70, 255, 0.35);
+  background: rgba(160, 70, 255, 0.08);
+}
+.stat-value {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.stat-purple .stat-value {
+  color: #C085FF;
+}
+.stat-unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 0.15rem;
+  opacity: 0.7;
+}
+.stat-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #999);
+  margin-top: 0.3rem;
+}
+
+.tdm-note {
+  font-size: 0.75rem;
+  color: var(--text-muted, #999);
+  margin: 0.9rem 0 0;
+  line-height: 1.4;
+}

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Vie
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, interval } from 'rxjs';
 import { DriverDetailModalComponent } from '../../shared/driver-detail-modal/driver-detail-modal.component';
+import { TrackDetailModalComponent } from '../../shared/track-detail-modal/track-detail-modal.component';
 import { CalendarService, LastRaceRecap, Race } from '../../core/services/calendar.service';
 import { DriverStanding, StandingsService } from '../../core/services/standings.service';
 import { Team, TeamService } from '../../core/services/team.service';
@@ -63,6 +64,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       windowClass: 'driver-modal'
     });
     ref.componentInstance.driverId = driverId;
+  }
+
+  openTrack(race: Race): void {
+    const ref = this.modalService.open(TrackDetailModalComponent, {
+      centered: true,
+      windowClass: 'driver-modal'
+    });
+    ref.componentInstance.circuitId = race.circuitId;
+    ref.componentInstance.circuitName = race.circuitName;
+    ref.componentInstance.locality = race.locality;
+    ref.componentInstance.country = race.country;
+    ref.componentInstance.raceName = race.raceName;
   }
 
   ngOnInit(): void {
