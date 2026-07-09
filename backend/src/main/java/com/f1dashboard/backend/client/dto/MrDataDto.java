@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MrDataDto {
+    private String total;
+
     @JsonProperty("StandingsTable")
     private StandingsTableDto standingsTable;
 
@@ -20,4 +22,7 @@ public class MrDataDto {
 
     @JsonProperty("ConstructorTable")
     private ConstructorTableDto constructorTable;
+
+    @JsonProperty("SeasonTable")
+    private SeasonTableDto seasonTable;
 }

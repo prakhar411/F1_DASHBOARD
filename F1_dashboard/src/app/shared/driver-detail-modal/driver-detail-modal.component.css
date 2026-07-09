@@ -1,0 +1,179 @@
+.ddm {
+  position: relative;
+  background: #14141a;
+  border-radius: 16px;
+  overflow: hidden;
+  color: var(--text-primary, #fff);
+}
+
+.ddm-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.35);
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ddm-close:hover {
+  background: rgba(225, 6, 0, 0.6);
+}
+
+.ddm-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3.5rem 1rem;
+  color: var(--text-secondary, #aaa);
+}
+
+/* Header */
+.ddm-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-height: 190px;
+  padding: 1.5rem 0 0 1.5rem;
+}
+.ddm-header-info {
+  padding-bottom: 1.3rem;
+  min-width: 0;
+}
+.ddm-number {
+  font-size: 1rem;
+  font-weight: 800;
+  opacity: 0.85;
+}
+.ddm-name {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin: 0.1rem 0 0.3rem;
+  line-height: 1.1;
+}
+.ddm-name strong {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ddm-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.team-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+.ddm-bio {
+  font-size: 0.78rem;
+  opacity: 0.75;
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.ddm-photo {
+  width: 170px;
+  height: 190px;
+  object-fit: cover;
+  object-position: top;
+  flex: none;
+  filter: drop-shadow(-8px 0 18px rgba(0, 0, 0, 0.45));
+}
+
+/* Body */
+.ddm-body {
+  padding: 1.2rem 1.5rem 1.5rem;
+}
+
+.ddm-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+@media (max-width: 480px) {
+  .ddm-stats { grid-template-columns: repeat(3, 1fr); }
+}
+.stat-tile {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 0.65rem 0.4rem;
+  text-align: center;
+}
+.stat-gold {
+  border-color: rgba(255, 183, 0, 0.4);
+  background: rgba(255, 183, 0, 0.08);
+}
+.stat-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.stat-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #999);
+  margin-top: 0.2rem;
+}
+
+/* Sections */
+.ddm-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.9rem 0 0.3rem;
+  margin-bottom: 0.5rem;
+}
+.ddm-section-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #999);
+  margin-bottom: 0.6rem;
+}
+.ddm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.88rem;
+  padding: 0.28rem 0;
+  color: var(--text-secondary, #bbb);
+}
+.ddm-row strong {
+  color: var(--text-primary, #fff);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Purple fastest lap */
+.lap-purple {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #C085FF !important;
+}
+.lap-clock {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}

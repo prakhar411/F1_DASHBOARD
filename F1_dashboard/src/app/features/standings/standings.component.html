@@ -21,7 +21,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let d of driverStandings">
+              <tr *ngFor="let d of driverStandings" class="clickable-driver" (click)="openDriver(d.driverId)">
                 <td>{{ d.position }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-2">
