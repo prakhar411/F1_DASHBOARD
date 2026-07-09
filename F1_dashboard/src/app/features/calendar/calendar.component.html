@@ -11,7 +11,8 @@
       <div class="text-muted small">{{ r.circuitName }}, {{ r.locality }}, {{ r.country }}</div>
     </div>
     <div class="text-end">
-      <div>{{ r.raceDate | date:'mediumDate' }}</div>
+      <div>{{ r.raceDateTimeUtc | date:'mediumDate' }}</div>
+      <div class="text-muted small" *ngIf="r.raceTime">{{ r.raceDateTimeUtc | date:'HH:mm (zzz)' }}</div>
       <span class="badge bg-danger" *ngIf="r.round === nextRound">Next race</span>
     </div>
   </div>

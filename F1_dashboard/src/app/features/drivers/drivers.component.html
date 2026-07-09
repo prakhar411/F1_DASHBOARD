@@ -4,7 +4,8 @@
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
   <div class="col" *ngFor="let d of drivers">
-    <div class="card h-100 team-accent" [style.border-left-color]="teamColor(d.constructorId)">
+    <div class="card h-100 team-accent clickable-driver" (click)="openDriver(d.driverId)"
+         [style.border-left-color]="teamColor(d.constructorId)">
       <div class="card-body d-flex gap-3">
         <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
                             [constructorId]="d.constructorId" [size]="56"></app-driver-avatar>

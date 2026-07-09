@@ -58,6 +58,7 @@ public class RaceServiceImpl implements RaceService {
                 race.getSeason(),
                 race.getRound(),
                 race.getRaceName(),
+                race.getCircuitId(),
                 race.getCircuitName(),
                 race.getLocality(),
                 race.getCountry(),

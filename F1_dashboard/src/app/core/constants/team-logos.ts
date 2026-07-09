@@ -2,7 +2,7 @@ export const TEAM_LOGOS: Record<string, string> = {
   ferrari: 'assets/teams/ferrari.png',
   mclaren: 'assets/teams/mclaren.svg',
   mercedes: 'assets/teams/mercedes.svg',
-  aston_martin: 'assets/teams/aston_martin.jpg',
+  aston_martin: 'assets/teams/aston_martin.png',
   alpine: 'assets/teams/alpine.svg',
   williams: 'assets/teams/williams.svg',
   red_bull: 'assets/teams/red_bull.png',

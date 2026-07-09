@@ -47,7 +47,38 @@
       "Bash(mkdir -p \"d:/Duo-Projects/F1_DASHBOARD/F1_dashboard/src/assets/drivers\")",
       "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0 Safari/537.36' https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000001/common/f1/2026/mercedes/andant01/2026mercedesandant01right.webp -o antonelli.webp)",
       "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0 Safari/537.36' https://media.formula1.com/image/upload/c_fill,w_720/q_auto/v1740000001/common/f1/2026/redbullracing/isahad01/2026redbullracingisahad01right.webp -o hadjar.webp)",
-      "Bash(taskkill //PID 17804 //F)"
+      "Bash(taskkill //PID 17804 //F)",
+      "Bash(mv -f red_bull_new.png red_bull.png)",
+      "Bash(mv -f aston_martin_new.png aston_martin.png)",
+      "Bash(rm -f aston_martin.jpg)",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe\" -u root -p\"Prakhar@411\" -N -e \"SELECT circuit_id, country FROM f1_dashboard.races ORDER BY round;\")",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/dto/response/**)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/service/impl/**)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/**)",
+      "Bash(taskkill //PID 25620 //F)",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/drivers/hamilton/results/1/?limit=1\")",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/drivers/hamilton/driverstandings/1/?limit=1\")",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/drivers/hamilton/driverstandings/?limit=100\")",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/drivers/hamilton/seasons/?limit=100\")",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/2020/drivers/hamilton/driverstandings/?limit=10\")",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/controller/**)",
+      "Bash(taskkill //PID 11684 //F)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/config/**)"
+    ],
+    "additionalDirectories": [
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\response",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\service\\impl",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\resources\\db\\migration",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\entity",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\repository",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\client\\dto",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\client",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\service",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\controller",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\resources",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\config"
     ]
   }
 }

@@ -13,4 +13,6 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
     Optional<RaceResult> findByRace_IdAndDriver_DriverId(Long raceId, String driverId);
 
     List<RaceResult> findByRace_SeasonAndFastestLapMillisIsNotNull(Integer season);
+
+    Optional<RaceResult> findFirstByDriver_DriverIdOrderByRace_RaceDateDesc(String driverId);
 }

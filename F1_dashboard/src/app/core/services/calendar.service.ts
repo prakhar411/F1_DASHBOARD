@@ -7,6 +7,7 @@ export interface Race {
   season: number;
   round: number;
   raceName: string;
+  circuitId: string | null;
   circuitName: string;
   locality: string;
   country: string;

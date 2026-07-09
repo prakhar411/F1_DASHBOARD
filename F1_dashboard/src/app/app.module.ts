@@ -17,6 +17,7 @@ import { CalendarComponent } from './features/calendar/calendar.component';
 import { TeamBadgeComponent } from './shared/team-badge/team-badge.component';
 import { TeamNamePipe } from './shared/pipes/team-name.pipe';
 import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.component';
+import { DriverDetailModalComponent } from './shared/driver-detail-modal/driver-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.comp
     CalendarComponent,
     TeamBadgeComponent,
     TeamNamePipe,
-    DriverAvatarComponent
+    DriverAvatarComponent,
+    DriverDetailModalComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,124 @@
+<div class="ddm">
+
+  <button type="button" class="ddm-close" aria-label="Close" (click)="activeModal.dismiss()">&times;</button>
+
+  <div *ngIf="loading" class="ddm-loading">
+    <div class="spinner-border text-danger" role="status"></div>
+    <p>Loading driver profile&hellip;</p>
+  </div>
+
+  <div *ngIf="failed" class="ddm-loading">
+    <p class="text-danger mb-0">Could not load driver details.</p>
+  </div>
+
+  <ng-container *ngIf="detail as d">
+    <!-- Header -->
+    <div class="ddm-header"
+         [style.background]="'linear-gradient(150deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, #101018), #101018 85%)'">
+      <div class="ddm-header-info">
+        <div class="ddm-number" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</div>
+        <h3 class="ddm-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></h3>
+        <div class="ddm-sub">
+          <span class="team-swatch" [style.background]="teamColor(d.constructorId)"></span>
+          {{ (d.constructorName || '—') | teamName:d.constructorId }}
+        </div>
+        <div class="ddm-bio">
+          <span *ngIf="d.nationality">{{ d.nationality }}</span>
+          <span *ngIf="age !== null">&middot; {{ age }} yrs</span>
+          <span *ngIf="d.code">&middot; {{ d.code }}</span>
+        </div>
+      </div>
+      <img *ngIf="driverPhoto(d.driverId) as photo" [src]="photo"
+           [alt]="d.givenName + ' ' + d.familyName" class="ddm-photo">
+    </div>
+
+    <div class="ddm-body">
+
+      <!-- Career stat tiles -->
+      <div class="ddm-stats">
+        <div class="stat-tile stat-gold">
+          <span class="stat-value">{{ d.championships ?? '—' }}</span>
+          <span class="stat-label">🏆 Titles</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.careerWins ?? '—' }}</span>
+          <span class="stat-label">Wins</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.careerPodiums ?? '—' }}</span>
+          <span class="stat-label">Podiums</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.careerPoints ?? '—' }}</span>
+          <span class="stat-label">Career Pts</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value">{{ d.seasonsCount ?? '—' }}</span>
+          <span class="stat-label">Seasons</span>
+        </div>
+      </div>
+
+      <!-- This season -->
+      <div class="ddm-section" *ngIf="d.standingPosition !== null">
+        <div class="ddm-section-title">This Season</div>
+        <div class="ddm-row">
+          <span>Championship position</span>
+          <strong>P{{ d.standingPosition }} &middot; {{ d.standingPoints }} pts</strong>
+        </div>
+        <div class="ddm-row" *ngIf="d.seasonWins !== null">
+          <span>Wins</span>
+          <strong>{{ d.seasonWins }}</strong>
+        </div>
+        <div class="ddm-row" *ngIf="d.seasonBestLapTime">
+          <span>Season best lap</span>
+          <strong class="lap-purple">
+            <svg class="lap-clock" viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 4.5 V8 L10.5 9.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            {{ d.seasonBestLapTime }}
+          </strong>
+        </div>
+      </div>
+
+      <!-- Last race -->
+      <div class="ddm-section" *ngIf="d.lastRace as lr">
+        <div class="ddm-section-title">Last Race &mdash; {{ lr.raceName }}</div>
+        <div class="ddm-row">
+          <span>Finished</span>
+          <strong>{{ lr.position !== null ? 'P' + lr.position : 'DNF' }}
+            <span class="text-muted" *ngIf="lr.points !== null">&middot; {{ lr.points }} pts</span>
+          </strong>
+        </div>
+        <div class="ddm-row" *ngIf="lr.fastestLapTime">
+          <span>Best lap</span>
+          <strong class="lap-purple">
+            <svg class="lap-clock" viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 4.5 V8 L10.5 9.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            {{ lr.fastestLapTime }}
+          </strong>
+        </div>
+      </div>
+
+      <!-- Team history -->
+      <div class="ddm-section" *ngIf="d.currentTeamSince || d.previousTeams.length">
+        <div class="ddm-section-title">Team History</div>
+        <div class="ddm-row" *ngIf="d.currentTeamSince">
+          <span>At {{ (d.constructorName || 'current team') | teamName:d.constructorId }} since</span>
+          <strong>{{ d.currentTeamSince }}</strong>
+        </div>
+        <div class="ddm-row" *ngFor="let stint of d.previousTeams.slice().reverse()">
+          <span>{{ stint.name }}</span>
+          <strong>{{ stint.fromSeason }}<ng-container *ngIf="stint.toSeason !== stint.fromSeason">&ndash;{{ stint.toSeason }}</ng-container></strong>
+        </div>
+        <div class="ddm-row" *ngIf="d.firstSeason">
+          <span>F1 debut</span>
+          <strong>{{ d.firstSeason }}</strong>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+</div>

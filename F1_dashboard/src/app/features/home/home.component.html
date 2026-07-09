@@ -29,33 +29,81 @@
 
   <!-- ---- NEXT RACE CARD ---- -->
   <div class="card race-card" [class.race-live]="raceIsLive">
+    <div class="circuit-backdrop" aria-hidden="true"
+         *ngIf="nextRace && circuitImage(nextRace.circuitId) as circuit">
+      <img [src]="circuit" alt="">
+    </div>
     <div class="card-body">
-      <ng-container *ngIf="nextRace; else noRace">
+      <div class="card-header">
+        <span class="card-label"><span class="flag-icon">🏁</span> Next Race</span>
         <div *ngIf="raceIsLive" class="live-badge">
           <span class="live-dot"></span> LIVE
         </div>
-        <div class="card-label">Next Race</div>
+      </div>
+
+      <ng-container *ngIf="nextRace; else noRace">
+        <div class="race-meta">
+          <span class="round-badge">Round {{ nextRace.round }}</span>
+          <span class="date-chip">{{ nextRace.raceDateTimeUtc | date:'EEE, d MMM' }} · {{ nextRace.raceDateTimeUtc | date:'HH:mm (zzz)' }}</span>
+        </div>
         <h3 class="race-name">{{ nextRace.raceName }}</h3>
         <p class="race-location">
-          {{ nextRace.circuitName }} <span class="sep">·</span> {{ nextRace.locality }}, {{ nextRace.country }}
+          <span class="circuit">{{ nextRace.circuitName }}</span>
+          <span class="sep">·</span>
+          <span class="locality">{{ nextRace.locality }}, {{ nextRace.country }}</span>
         </p>
 
-        <div *ngIf="countdown" class="countdown-grid">
-          <div class="digit-box">
-            <span class="digit">{{ countdown.days }}</span>
-            <span class="label">days</span>
+        <div *ngIf="countdown" class="countdown-rings">
+          <div class="ring-unit">
+            <svg class="ring-svg" viewBox="0 0 84 84">
+              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+              <circle class="ring-progress" cx="42" cy="42" r="36"
+                      [style.stroke-dasharray]="ringCircumference"
+                      [style.stroke-dashoffset]="ringOffset(countdown.days, 30)"></circle>
+            </svg>
+            <div class="ring-content">
+              <span class="ring-digit">{{ countdown.days }}</span>
+              <span class="ring-label">Days</span>
+            </div>
           </div>
-          <div class="digit-box">
-            <span class="digit">{{ countdown.hours }}</span>
-            <span class="label">hrs</span>
+          <span class="ring-colon">:</span>
+          <div class="ring-unit">
+            <svg class="ring-svg" viewBox="0 0 84 84">
+              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+              <circle class="ring-progress" cx="42" cy="42" r="36"
+                      [style.stroke-dasharray]="ringCircumference"
+                      [style.stroke-dashoffset]="ringOffset(countdown.hours, 24)"></circle>
+            </svg>
+            <div class="ring-content">
+              <span class="ring-digit">{{ countdown.hours }}</span>
+              <span class="ring-label">Hrs</span>
+            </div>
           </div>
-          <div class="digit-box">
-            <span class="digit">{{ countdown.minutes }}</span>
-            <span class="label">min</span>
+          <span class="ring-colon">:</span>
+          <div class="ring-unit">
+            <svg class="ring-svg" viewBox="0 0 84 84">
+              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+              <circle class="ring-progress" cx="42" cy="42" r="36"
+                      [style.stroke-dasharray]="ringCircumference"
+                      [style.stroke-dashoffset]="ringOffset(countdown.minutes, 60)"></circle>
+            </svg>
+            <div class="ring-content">
+              <span class="ring-digit">{{ countdown.minutes }}</span>
+              <span class="ring-label">Min</span>
+            </div>
           </div>
-          <div class="digit-box">
-            <span class="digit">{{ countdown.seconds }}</span>
-            <span class="label">sec</span>
+          <span class="ring-colon">:</span>
+          <div class="ring-unit ring-unit-seconds">
+            <svg class="ring-svg" viewBox="0 0 84 84">
+              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+              <circle class="ring-progress ring-progress-seconds" cx="42" cy="42" r="36"
+                      [style.stroke-dasharray]="ringCircumference"
+                      [style.stroke-dashoffset]="ringOffset(countdown.seconds, 60)"></circle>
+            </svg>
+            <div class="ring-content">
+              <span class="ring-digit">{{ countdown.seconds }}</span>
+              <span class="ring-label">Sec</span>
+            </div>
           </div>
         </div>
 
@@ -65,8 +113,11 @@
       </ng-container>
 
       <ng-template #noRace>
-        <p class="text-muted" *ngIf="noUpcomingRace">No upcoming race scheduled.</p>
-        <p class="text-muted" *ngIf="!noUpcomingRace">Loading next race…</p>
+        <div class="no-race-state">
+          <span class="emoji">🏎️</span>
+          <p class="text-muted" *ngIf="noUpcomingRace">No upcoming race scheduled.</p>
+          <p class="text-muted" *ngIf="!noUpcomingRace">Loading next race…</p>
+        </div>
       </ng-template>
     </div>
   </div>
@@ -75,67 +126,93 @@
   <div class="card standings-card" *ngIf="topStandings.length">
     <div class="card-body">
       <div class="card-label">Current Top 3</div>
-      <div class="podium-compact">
-        <div class="driver-item" *ngFor="let d of topStandings; let i = index"
-             [style.order]="d.position === 1 ? 2 : (d.position === 2 ? 1 : 3)">
-          <app-driver-avatar
-            [driverId]="d.driverId"
-            [givenName]="d.givenName"
-            [familyName]="d.familyName"
-            [constructorId]="d.constructorId"
-            [size]="44"
-            class="avatar"
-            [style.--ring-color]="teamColor(d.constructorId)">
-          </app-driver-avatar>
-          <div class="driver-info">
-            <span class="pos" [style.color]="teamColor(d.constructorId)">#{{ d.position }}</span>
-            <span class="name">{{ d.givenName }} {{ d.familyName }}</span>
-            <span class="team">{{ d.constructorName | teamName:d.constructorId }}</span>
-            <span class="points">{{ d.points }} pts</span>
+      <div class="standings-rows">
+        <div class="standing-row clickable-driver" *ngFor="let d of topStandings" (click)="openDriver(d.driverId)">
+          <div class="rank" [style.color]="teamColor(d.constructorId)">{{ d.position }}</div>
+          <div class="photo-frame"
+               [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, var(--surface-2)), var(--surface-2) 85%)'">
+            <img *ngIf="driverPhoto(d.driverId) as photo; else standingInitials" [src]="photo"
+                 [alt]="d.givenName + ' ' + d.familyName" class="driver-photo">
+            <ng-template #standingInitials>
+              <span class="photo-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span>
+            </ng-template>
           </div>
+          <div class="standing-info">
+            <div class="name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+            <div class="team">
+              <span class="team-swatch" [style.background]="teamColor(d.constructorId)"></span>
+              {{ d.constructorName | teamName:d.constructorId }}
+            </div>
+          </div>
+          <div class="points-chip">{{ d.points }} <span>pts</span></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ========== TEAMS ========== -->
+<!-- ========== BOTTOM GRID (TEAMS + RECAP) ========== -->
+<div class="bottom-grid">
+
+  <!-- LAST RACE RECAP CARD -->
+  <div class="card recap-card" *ngIf="lastRaceRecap">
+    <div class="card-body">
+      <div class="card-label">
+        Last Race <span class="sep">—</span> {{ lastRaceRecap.raceName }}
+      </div>
+      <div class="recap-podium">
+        <div class="recap-driver-card clickable-driver" *ngFor="let p of lastRaceRecap.podium"
+             (click)="openDriver(p.driverId)"
+             [class.recap-winner]="p.position === 1"
+             [class.recap-second]="p.position === 2"
+             [class.recap-third]="p.position === 3">
+          <div class="recap-photo"
+               [style.background]="'linear-gradient(170deg, color-mix(in srgb, ' + teamColor(p.constructorId) + ' 60%, var(--surface-2)), var(--surface-2) 90%)'">
+            <span class="recap-pos-badge"
+                  [class.badge-p1]="p.position === 1"
+                  [class.badge-p2]="p.position === 2"
+                  [class.badge-p3]="p.position === 3">P{{ p.position }}</span>
+            <img *ngIf="driverPhoto(p.driverId) as photo; else recapInitials" [src]="photo"
+                 [alt]="p.givenName + ' ' + p.familyName" class="driver-photo">
+            <ng-template #recapInitials>
+              <span class="photo-initials">{{ p.givenName.charAt(0) }}{{ p.familyName.charAt(0) }}</span>
+            </ng-template>
+          </div>
+          <div class="recap-details">
+            <div class="name">{{ p.givenName }} <strong>{{ p.familyName }}</strong></div>
+            <div class="team">
+              <span class="team-swatch" [style.background]="teamColor(p.constructorId)"></span>
+              {{ p.constructorName | teamName:p.constructorId }}
+            </div>
+            <div class="fastest-lap" *ngIf="p.bestLapTime">
+              <svg class="lap-clock" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M8 4.5 V8 L10.5 9.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              {{ p.bestLapTime }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- /bottom-grid -->
+
+<!-- ========== TEAMS GRID ========== -->
 <div class="section teams-section reveal" #revealSection *ngIf="teams.length">
   <h2 class="section-title">Teams</h2>
-  <div class="team-chips">
-    <span class="chip" *ngFor="let t of teams"
-          [style.border-color]="teamColor(t.constructorId)"
-          [style.background]="'color-mix(in srgb, ' + teamColor(t.constructorId) + ' 12%, var(--surface-1))'">
-      <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="20"></app-team-badge>
-      {{ t.name | teamName:t.constructorId }}
-    </span>
-  </div>
-</div>
-
-<!-- ========== LAST RACE RECAP ========== -->
-<div class="section recap-section reveal" #revealSection *ngIf="lastRaceRecap">
-  <h2 class="section-title">Last Race <span class="sep">—</span> {{ lastRaceRecap.raceName }}</h2>
-  <div class="podium-full">
-    <div class="podium-step" *ngFor="let p of lastRaceRecap.podium"
-         [style.order]="p.position === 1 ? 2 : (p.position === 2 ? 1 : 3)">
-      <app-driver-avatar
-        [driverId]="p.driverId"
-        [givenName]="p.givenName"
-        [familyName]="p.familyName"
-        [constructorId]="p.constructorId"
-        [size]="56"
-        class="avatar"
-        [style.--ring-color]="teamColor(p.constructorId)">
-      </app-driver-avatar>
-      <div class="pos-number" [style.color]="teamColor(p.constructorId)">{{ p.position }}</div>
-      <div class="driver-name">{{ p.givenName }} {{ p.familyName }}</div>
-      <div class="driver-team">{{ p.constructorName | teamName:p.constructorId }}</div>
-      <div class="best-lap" *ngIf="p.bestLapTime">⏱ {{ p.bestLapTime }}</div>
-      <div class="podium-bar"
-           [class.bar-p1]="p.position === 1"
-           [class.bar-p2]="p.position === 2"
-           [class.bar-p3]="p.position === 3"
-           [style.background]="'color-mix(in srgb, ' + teamColor(p.constructorId) + ' 30%, var(--surface-2))'">
+  <div class="teams-grid">
+    <div class="team-card" *ngFor="let t of teams"
+         [style.border-top-color]="teamColor(t.constructorId)">
+      <div class="team-car-stage"
+           [style.background]="'radial-gradient(ellipse 90% 70% at 50% 100%, color-mix(in srgb, ' + teamColor(t.constructorId) + ' 30%, transparent), transparent)'">
+        <img *ngIf="teamCarImage(t.constructorId) as car" [src]="car"
+             [alt]="t.name + ' car'" class="team-car-img" loading="lazy">
+      </div>
+      <div class="team-card-footer">
+        <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="34"></app-team-badge>
+        <div class="team-card-name">{{ t.name | teamName:t.constructorId }}</div>
       </div>
     </div>
   </div>

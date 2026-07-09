@@ -1,9 +1,15 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, interval } from 'rxjs';
+import { DriverDetailModalComponent } from '../../shared/driver-detail-modal/driver-detail-modal.component';
 import { CalendarService, LastRaceRecap, Race } from '../../core/services/calendar.service';
 import { DriverStanding, StandingsService } from '../../core/services/standings.service';
 import { Team, TeamService } from '../../core/services/team.service';
 import { teamColor } from '../../core/constants/team-colors';
+import { driverPhoto } from '../../core/constants/driver-photos';
+import { teamLogo } from '../../core/constants/team-logos';
+import { circuitImage } from '../../core/constants/circuit-images';
+import { teamCarImage } from '../../core/constants/team-cars';
 
 interface Countdown {
   days: number;
@@ -11,6 +17,9 @@ interface Countdown {
   minutes: number;
   seconds: number;
 }
+
+const RING_RADIUS = 36;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
 @Component({
   selector: 'app-home',
@@ -29,6 +38,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   lastRaceRecap: LastRaceRecap | null = null;
 
   teamColor = teamColor;
+  driverPhoto = driverPhoto;
+  teamLogo = teamLogo;
+  circuitImage = circuitImage;
+  teamCarImage = teamCarImage;
 
   @ViewChildren('revealSection') revealSections!: QueryList<ElementRef<HTMLElement>>;
   private observer?: IntersectionObserver;
@@ -37,8 +50,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private calendarService: CalendarService,
     private standingsService: StandingsService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private modalService: NgbModal
   ) { }
+
+  openDriver(driverId: string | null): void {
+    if (!driverId) {
+      return;
+    }
+    const ref = this.modalService.open(DriverDetailModalComponent, {
+      centered: true,
+      windowClass: 'driver-modal'
+    });
+    ref.componentInstance.driverId = driverId;
+  }
 
   ngOnInit(): void {
     this.calendarService.getNextRace().subscribe({
@@ -102,5 +127,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       minutes: Math.floor((totalSeconds % 3600) / 60),
       seconds: totalSeconds % 60
     };
+  }
+
+  get ringCircumference(): number {
+    return RING_CIRCUMFERENCE;
+  }
+
+  ringOffset(value: number, max: number): number {
+    const fraction = Math.min(Math.max(value, 0) / max, 1);
+    return RING_CIRCUMFERENCE * (1 - fraction);
   }
 }

@@ -92,3 +92,15 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--border-hairline);
   color: var(--text-primary);
 }
+
+/* Driver detail modal wrapper (NgbModal) */
+.driver-modal .modal-content {
+  background: transparent;
+  border: none;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+}
+
+.clickable-driver {
+  cursor: pointer;
+}
