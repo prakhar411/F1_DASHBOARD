@@ -61,6 +61,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     const ref = this.modalService.open(DriverDetailModalComponent, {
       centered: true,
+      size: 'xl',
       windowClass: 'driver-modal'
     });
     ref.componentInstance.driverId = driverId;
@@ -69,6 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   openTrack(race: Race): void {
     const ref = this.modalService.open(TrackDetailModalComponent, {
       centered: true,
+      size: 'lg',
       windowClass: 'driver-modal'
     });
     ref.componentInstance.circuitId = race.circuitId;

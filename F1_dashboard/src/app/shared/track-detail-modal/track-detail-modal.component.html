@@ -32,6 +32,23 @@
           <span class="stat-label">DRS Zones (2025)</span>
         </div>
       </div>
+      <div class="tdm-winner" *ngIf="lastWinner as w">
+        <div class="tdm-winner-label">🏆 {{ w.season }} Winner</div>
+        <div class="tdm-winner-row">
+          <div class="tdm-winner-who">
+            <span class="winner-name">{{ w.driverName }}</span>
+            <span class="winner-team" *ngIf="w.constructorName">{{ w.constructorName }}</span>
+          </div>
+          <span class="fastest-lap" *ngIf="w.fastestLapTime">
+            <svg class="lap-clock" viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 4.5 V8 L10.5 9.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            {{ w.fastestLapTime }}
+          </span>
+        </div>
+      </div>
+
       <p class="tdm-note" *ngIf="d.drsZones2025 === null">
         This circuit is new for the 2026 season — no 2025 DRS reference data exists.
       </p>

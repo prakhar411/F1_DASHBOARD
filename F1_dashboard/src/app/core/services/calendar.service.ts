@@ -34,6 +34,15 @@ export interface LastRaceRecap {
   podium: PodiumFinisher[];
 }
 
+export interface CircuitWinner {
+  season: number;
+  raceName: string;
+  driverId: string;
+  driverName: string;
+  constructorName: string | null;
+  fastestLapTime: string | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +60,9 @@ export class CalendarService {
 
   getLastRaceRecap(): Observable<LastRaceRecap> {
     return this.http.get<LastRaceRecap>(`${environment.apiUrl}/calendar/last-result`);
+  }
+
+  getCircuitLastWinner(circuitId: string): Observable<CircuitWinner> {
+    return this.http.get<CircuitWinner>(`${environment.apiUrl}/circuits/${circuitId}/last-winner`);
   }
 }

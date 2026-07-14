@@ -75,7 +75,12 @@
       "WebFetch(domain:formula-timer.com)",
       "WebFetch(domain:www.sportskeeda.com)",
       "WebFetch(domain:www.motorsportmagazine.com)",
-      "WebFetch(domain:motorsporttickets.com)"
+      "WebFetch(domain:motorsporttickets.com)",
+      "Bash(grep -rn \"DriverDetailModalComponent, {\" src/app --include=\"*.ts\" -A 3)",
+      "Bash(taskkill //PID 2972 //F)",
+      "Bash(curl -s --max-time 30 http://localhost:8080/api/calendar)",
+      "Bash(curl -s --max-time 30 \"http://localhost:8080/api/circuits/spa/last-winner\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 30 \"http://localhost:8080/api/circuits/madring/last-winner\")"
     ],
     "additionalDirectories": [
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\response",
@@ -89,7 +94,8 @@
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\controller",
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\resources",
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\config",
-      "d:\\Duo-Projects\\F1_DASHBOARD\\backend"
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend",
+      "C:\\Users\\prakhar\\.claude\\projects\\d--Duo-Projects-F1-DASHBOARD-F1-dashboard\\memory"
     ]
   }
 }
