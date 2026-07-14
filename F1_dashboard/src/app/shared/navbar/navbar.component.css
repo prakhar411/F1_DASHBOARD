@@ -65,26 +65,6 @@
   background: linear-gradient(90deg, #e10600, #ff6b5a);
 }
 
-/* CTA */
-.pw-cta {
-  display: inline-block;
-  background: linear-gradient(135deg, #e10600, #b80500);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.45rem 1.25rem;
-  border-radius: 999px;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(225, 6, 0, 0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
-  white-space: nowrap;
-}
-.pw-cta:hover {
-  color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(225, 6, 0, 0.5);
-}
-
 /* Toggler */
 .pw-toggler {
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -105,11 +85,6 @@
     background: rgba(20, 23, 30, 0.98);
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 12px;
-  }
-  .pw-cta {
-    display: block;
-    text-align: center;
-    margin: 0.5rem 0.85rem 0.25rem;
   }
   .pw-link.active::after {
     display: none;

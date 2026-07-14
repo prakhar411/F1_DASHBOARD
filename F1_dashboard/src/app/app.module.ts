@@ -20,6 +20,7 @@ import { TeamNamePipe } from './shared/pipes/team-name.pipe';
 import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.component';
 import { DriverDetailModalComponent } from './shared/driver-detail-modal/driver-detail-modal.component';
 import { TrackDetailModalComponent } from './shared/track-detail-modal/track-detail-modal.component';
+import { TeamDetailModalComponent } from './shared/team-detail-modal/team-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TrackDetailModalComponent } from './shared/track-detail-modal/track-det
     TeamNamePipe,
     DriverAvatarComponent,
     DriverDetailModalComponent,
-    TrackDetailModalComponent
+    TrackDetailModalComponent,
+    TeamDetailModalComponent
   ],
   imports: [
     BrowserModule,

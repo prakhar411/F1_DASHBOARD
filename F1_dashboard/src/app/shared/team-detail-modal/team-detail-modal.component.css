@@ -1,0 +1,208 @@
+.tmm {
+  position: relative;
+  background: #14141a;
+  border-radius: 16px;
+  overflow: hidden;
+  color: var(--text-primary, #fff);
+}
+
+.tmm-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.35);
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tmm-close:hover {
+  background: rgba(225, 6, 0, 0.6);
+}
+
+.tmm-loading {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.tmm-loading .spinner-border {
+  margin-bottom: 0.8rem;
+}
+
+/* ---------- Car, top ---------- */
+.tmm-car-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem 1.5rem 1.6rem;
+}
+.tmm-car-img {
+  width: 100%;
+  max-width: 500px;
+  max-height: 230px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+}
+
+/* ---------- Logo + name strip ---------- */
+.tmm-brand-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.4rem;
+}
+.tmm-logo-img {
+  height: 48px;
+  max-width: 140px;
+  object-fit: contain;
+  flex: none;
+}
+.tmm-brand-text {
+  min-width: 0;
+}
+.tmm-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.15;
+}
+.tmm-nationality {
+  font-size: 0.82rem;
+  color: var(--text-secondary, #bbb);
+  margin-top: 0.15rem;
+}
+
+.tmm-body {
+  padding: 1.4rem 1.5rem 1.6rem;
+}
+
+/* ---------- Team details (underline stats, no boxes) ---------- */
+.tmm-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 1.3rem;
+  margin-bottom: 1.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tmm-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.tmm-stat-value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tmm-stat-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #999);
+}
+.tmm-stat-divider {
+  width: 1px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Current drivers (timing-tower rows, no photos) ---------- */
+.tmm-section-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #999);
+  margin-bottom: 0.7rem;
+}
+
+.tmm-driver-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid;
+  margin-bottom: 0.55rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.tmm-driver-row:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateX(3px);
+}
+.tmm-driver-pos {
+  flex: none;
+  width: 2.4rem;
+  font-weight: 800;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary, #bbb);
+}
+.tmm-driver-info {
+  flex: 1;
+  min-width: 0;
+}
+.tmm-driver-name {
+  font-size: 0.95rem;
+}
+.tmm-driver-name strong {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.tmm-driver-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted, #999);
+}
+.tmm-driver-pts {
+  flex: none;
+  text-align: right;
+  font-weight: 800;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.tmm-driver-pts span {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-muted, #999);
+  text-transform: uppercase;
+}
+
+.tmm-note {
+  font-size: 0.85rem;
+  color: var(--text-muted, #999);
+  margin: 0;
+}
+
+/* ---------- Phone tweaks ---------- */
+@media (max-width: 480px) {
+  .tmm-car-hero {
+    padding: 1.6rem 1rem 1rem;
+  }
+  .tmm-brand-strip,
+  .tmm-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .tmm-name {
+    font-size: 1.1rem;
+  }
+  .tmm-logo-img {
+    height: 38px;
+  }
+  .tmm-stat-value {
+    font-size: 1.35rem;
+  }
+}

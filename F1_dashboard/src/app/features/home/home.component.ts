@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, interval } from 'rxjs';
 import { DriverDetailModalComponent } from '../../shared/driver-detail-modal/driver-detail-modal.component';
 import { TrackDetailModalComponent } from '../../shared/track-detail-modal/track-detail-modal.component';
+import { TeamDetailModalComponent } from '../../shared/team-detail-modal/team-detail-modal.component';
 import { CalendarService, LastRaceRecap, Race } from '../../core/services/calendar.service';
 import { DriverStanding, StandingsService } from '../../core/services/standings.service';
 import { Team, TeamService } from '../../core/services/team.service';
@@ -65,6 +66,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       windowClass: 'driver-modal'
     });
     ref.componentInstance.driverId = driverId;
+  }
+
+  openTeam(constructorId: string | null, name: string, nationality: string | null): void {
+    if (!constructorId) {
+      return;
+    }
+    const ref = this.modalService.open(TeamDetailModalComponent, {
+      centered: true,
+      size: 'lg',
+      windowClass: 'driver-modal'
+    });
+    ref.componentInstance.constructorId = constructorId;
+    ref.componentInstance.name = name;
+    ref.componentInstance.nationality = nationality;
   }
 
   openTrack(race: Race): void {
