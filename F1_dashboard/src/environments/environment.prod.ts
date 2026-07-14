@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://f1-dashboard-backend-7mpa.onrender.com/api'
+  apiUrl: 'https://pitwall-831149857114.asia-south1.run.app/api'
 };
