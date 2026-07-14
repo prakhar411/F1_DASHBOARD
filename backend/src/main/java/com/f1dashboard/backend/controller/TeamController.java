@@ -1,8 +1,11 @@
 package com.f1dashboard.backend.controller;
 
 import com.f1dashboard.backend.dto.response.ConstructorDto;
+import com.f1dashboard.backend.dto.response.TeamDetailDto;
 import com.f1dashboard.backend.service.ConstructorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +24,12 @@ public class TeamController {
     @GetMapping
     public List<ConstructorDto> teams() {
         return constructorService.getConstructors();
+    }
+
+    @GetMapping("/{constructorId}/detail")
+    public ResponseEntity<TeamDetailDto> teamDetail(@PathVariable String constructorId) {
+        return constructorService.getTeamDetail(constructorId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

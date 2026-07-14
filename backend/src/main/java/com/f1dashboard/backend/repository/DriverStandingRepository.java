@@ -19,4 +19,11 @@ public interface DriverStandingRepository extends JpaRepository<DriverStanding, 
     Optional<DriverStanding> findBySeasonAndDriver_DriverId(Integer season, String driverId);
 
     Optional<DriverStanding> findFirstByOrderBySeasonDesc();
+
+    @Query("SELECT ds FROM DriverStanding ds "
+            + "JOIN FETCH ds.driver "
+            + "WHERE ds.season = :season AND ds.constructor.constructorId = :constructorId "
+            + "ORDER BY ds.position ASC")
+    List<DriverStanding> findBySeasonAndConstructorOrderByPositionAsc(@Param("season") Integer season,
+                                                                       @Param("constructorId") String constructorId);
 }

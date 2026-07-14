@@ -4,129 +4,135 @@
      Only the presentation layer (HTML structure + CSS) is rebuilt.
      ============================================================== -->
 
-<!-- ========== HERO ========== -->
-<section class="hero-section">
+<!-- ========== HERO (brand strip + next race) ========== -->
+<section class="hero-section" [class.race-live]="raceIsLive">
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-pattern" aria-hidden="true"></div>
+
   <div class="hero-content">
-    <div class="hero-stripe"></div>
-    <h1 class="hero-title">
-      <span class="text-accent">Pit</span><span class="text-light">Wall</span>
-      <span class="hero-badge">β</span>
-    </h1>
-    <p class="hero-subtitle">Your one‑stop platform for everything Formula 1.</p>
-    <ul class="value-props">
+    <div class="hero-top-row">
+      <p class="hero-subtitle-sm">Your one‑stop platform for everything Formula 1.</p>
+      <a class="btn-cta-sm" routerLink="/signup">Get Started <span class="arrow">→</span></a>
+    </div>
+
+    <ul class="value-props-sm">
       <li><span class="bullet">✦</span> Live standings &amp; calendar</li>
       <li><span class="bullet">✦</span> Predict races &amp; compete</li>
       <li><span class="bullet">✦</span> Learn F1 from scratch</li>
     </ul>
-    <a class="btn-cta" routerLink="/signup">Get Started <span class="arrow">→</span></a>
+
+    <div class="hero-divider"></div>
+
+    <!-- ---- NEXT RACE, merged into hero ---- -->
+    <div class="hero-race">
+      <div class="circuit-backdrop" aria-hidden="true"
+           *ngIf="nextRace && circuitImage(nextRace.circuitId) as circuit">
+        <img [src]="circuit" alt="">
+      </div>
+      <div class="hero-race-body">
+        <div class="card-header">
+          <span class="card-label"><span class="flag-icon">🏁</span> Next Race</span>
+          <div *ngIf="raceIsLive" class="live-badge">
+            <span class="live-dot"></span> LIVE
+          </div>
+        </div>
+
+        <ng-container *ngIf="nextRace; else noRace">
+          <div class="race-meta">
+            <span class="round-badge">Round {{ nextRace.round }}</span>
+            <span class="date-chip">{{ nextRace.raceDateTimeUtc | date:'EEE, d MMM' }} · {{ nextRace.raceDateTimeUtc | date:'HH:mm (zzz)' }}</span>
+            <button type="button" class="view-track-btn" (click)="openTrack(nextRace)">
+              <svg class="track-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M2 8c0-2 1.5-5 4-5s2 2 4 2 3-2 4 0-1 4-3 4-2-2-4-2-4 1-5 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              View Track
+            </button>
+          </div>
+          <h3 class="race-name">{{ nextRace.raceName }}</h3>
+          <p class="race-location">
+            <span class="circuit">{{ nextRace.circuitName }}</span>
+            <span class="sep">·</span>
+            <span class="locality">{{ nextRace.locality }}, {{ nextRace.country }}</span>
+          </p>
+
+          <div *ngIf="countdown" class="countdown-rings">
+            <div class="ring-unit">
+              <svg class="ring-svg" viewBox="0 0 84 84">
+                <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+                <circle class="ring-progress" cx="42" cy="42" r="36"
+                        [style.stroke-dasharray]="ringCircumference"
+                        [style.stroke-dashoffset]="ringOffset(countdown.days, 30)"></circle>
+              </svg>
+              <div class="ring-content">
+                <span class="ring-digit">{{ countdown.days }}</span>
+                <span class="ring-label">Days</span>
+              </div>
+            </div>
+            <span class="ring-colon">:</span>
+            <div class="ring-unit">
+              <svg class="ring-svg" viewBox="0 0 84 84">
+                <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+                <circle class="ring-progress" cx="42" cy="42" r="36"
+                        [style.stroke-dasharray]="ringCircumference"
+                        [style.stroke-dashoffset]="ringOffset(countdown.hours, 24)"></circle>
+              </svg>
+              <div class="ring-content">
+                <span class="ring-digit">{{ countdown.hours }}</span>
+                <span class="ring-label">Hrs</span>
+              </div>
+            </div>
+            <span class="ring-colon">:</span>
+            <div class="ring-unit">
+              <svg class="ring-svg" viewBox="0 0 84 84">
+                <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+                <circle class="ring-progress" cx="42" cy="42" r="36"
+                        [style.stroke-dasharray]="ringCircumference"
+                        [style.stroke-dashoffset]="ringOffset(countdown.minutes, 60)"></circle>
+              </svg>
+              <div class="ring-content">
+                <span class="ring-digit">{{ countdown.minutes }}</span>
+                <span class="ring-label">Min</span>
+              </div>
+            </div>
+            <span class="ring-colon">:</span>
+            <div class="ring-unit ring-unit-seconds">
+              <svg class="ring-svg" viewBox="0 0 84 84">
+                <circle class="ring-track" cx="42" cy="42" r="36"></circle>
+                <circle class="ring-progress ring-progress-seconds" cx="42" cy="42" r="36"
+                        [style.stroke-dasharray]="ringCircumference"
+                        [style.stroke-dashoffset]="ringOffset(countdown.seconds, 60)"></circle>
+              </svg>
+              <div class="ring-content">
+                <span class="ring-digit">{{ countdown.seconds }}</span>
+                <span class="ring-label">Sec</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="raceIsLive" class="race-live-cta">
+            <div class="race-live-text">
+              <span class="live-dot"></span> Race is Live
+            </div>
+            <a class="watch-live-btn" href="https://www.formula1.com/en/latest/live" target="_blank" rel="noopener">
+              Watch Live <span class="arrow">↗</span>
+            </a>
+          </div>
+        </ng-container>
+
+        <ng-template #noRace>
+          <div class="no-race-state">
+            <span class="emoji">🏎️</span>
+            <p class="text-muted" *ngIf="noUpcomingRace">No upcoming race scheduled.</p>
+            <p class="text-muted" *ngIf="!noUpcomingRace">Loading next race…</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ========== DASHBOARD GRID ========== -->
-<div class="dashboard-grid">
-
-  <!-- ---- NEXT RACE CARD ---- -->
-  <div class="card race-card" [class.race-live]="raceIsLive">
-    <div class="circuit-backdrop" aria-hidden="true"
-         *ngIf="nextRace && circuitImage(nextRace.circuitId) as circuit">
-      <img [src]="circuit" alt="">
-    </div>
-    <div class="card-body">
-      <div class="card-header">
-        <span class="card-label"><span class="flag-icon">🏁</span> Next Race</span>
-        <div *ngIf="raceIsLive" class="live-badge">
-          <span class="live-dot"></span> LIVE
-        </div>
-      </div>
-
-      <ng-container *ngIf="nextRace; else noRace">
-        <div class="race-meta">
-          <span class="round-badge">Round {{ nextRace.round }}</span>
-          <span class="date-chip">{{ nextRace.raceDateTimeUtc | date:'EEE, d MMM' }} · {{ nextRace.raceDateTimeUtc | date:'HH:mm (zzz)' }}</span>
-          <button type="button" class="view-track-btn" (click)="openTrack(nextRace)">
-            <svg class="track-icon" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M2 8c0-2 1.5-5 4-5s2 2 4 2 3-2 4 0-1 4-3 4-2-2-4-2-4 1-5 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
-            View Track
-          </button>
-        </div>
-        <h3 class="race-name">{{ nextRace.raceName }}</h3>
-        <p class="race-location">
-          <span class="circuit">{{ nextRace.circuitName }}</span>
-          <span class="sep">·</span>
-          <span class="locality">{{ nextRace.locality }}, {{ nextRace.country }}</span>
-        </p>
-
-        <div *ngIf="countdown" class="countdown-rings">
-          <div class="ring-unit">
-            <svg class="ring-svg" viewBox="0 0 84 84">
-              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
-              <circle class="ring-progress" cx="42" cy="42" r="36"
-                      [style.stroke-dasharray]="ringCircumference"
-                      [style.stroke-dashoffset]="ringOffset(countdown.days, 30)"></circle>
-            </svg>
-            <div class="ring-content">
-              <span class="ring-digit">{{ countdown.days }}</span>
-              <span class="ring-label">Days</span>
-            </div>
-          </div>
-          <span class="ring-colon">:</span>
-          <div class="ring-unit">
-            <svg class="ring-svg" viewBox="0 0 84 84">
-              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
-              <circle class="ring-progress" cx="42" cy="42" r="36"
-                      [style.stroke-dasharray]="ringCircumference"
-                      [style.stroke-dashoffset]="ringOffset(countdown.hours, 24)"></circle>
-            </svg>
-            <div class="ring-content">
-              <span class="ring-digit">{{ countdown.hours }}</span>
-              <span class="ring-label">Hrs</span>
-            </div>
-          </div>
-          <span class="ring-colon">:</span>
-          <div class="ring-unit">
-            <svg class="ring-svg" viewBox="0 0 84 84">
-              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
-              <circle class="ring-progress" cx="42" cy="42" r="36"
-                      [style.stroke-dasharray]="ringCircumference"
-                      [style.stroke-dashoffset]="ringOffset(countdown.minutes, 60)"></circle>
-            </svg>
-            <div class="ring-content">
-              <span class="ring-digit">{{ countdown.minutes }}</span>
-              <span class="ring-label">Min</span>
-            </div>
-          </div>
-          <span class="ring-colon">:</span>
-          <div class="ring-unit ring-unit-seconds">
-            <svg class="ring-svg" viewBox="0 0 84 84">
-              <circle class="ring-track" cx="42" cy="42" r="36"></circle>
-              <circle class="ring-progress ring-progress-seconds" cx="42" cy="42" r="36"
-                      [style.stroke-dasharray]="ringCircumference"
-                      [style.stroke-dashoffset]="ringOffset(countdown.seconds, 60)"></circle>
-            </svg>
-            <div class="ring-content">
-              <span class="ring-digit">{{ countdown.seconds }}</span>
-              <span class="ring-label">Sec</span>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="raceIsLive" class="live-flag">
-          <span>🏁</span> Race weekend is live!
-        </div>
-      </ng-container>
-
-      <ng-template #noRace>
-        <div class="no-race-state">
-          <span class="emoji">🏎️</span>
-          <p class="text-muted" *ngIf="noUpcomingRace">No upcoming race scheduled.</p>
-          <p class="text-muted" *ngIf="!noUpcomingRace">Loading next race…</p>
-        </div>
-      </ng-template>
-    </div>
-  </div>
+<!-- ========== SECONDARY GRID (STANDINGS + RECAP) ========== -->
+<div class="secondary-grid">
 
   <!-- ---- TOP 3 STANDINGS ---- -->
   <div class="card standings-card" *ngIf="topStandings.length">
@@ -155,12 +161,8 @@
       </div>
     </div>
   </div>
-</div>
 
-<!-- ========== BOTTOM GRID (TEAMS + RECAP) ========== -->
-<div class="bottom-grid">
-
-  <!-- LAST RACE RECAP CARD -->
+  <!-- ---- LAST RACE RECAP ---- -->
   <div class="card recap-card" *ngIf="lastRaceRecap">
     <div class="card-body">
       <div class="card-label">
@@ -203,22 +205,17 @@
     </div>
   </div>
 
-</div> <!-- /bottom-grid -->
+</div> <!-- /secondary-grid -->
 
 <!-- ========== TEAMS GRID ========== -->
 <div class="section teams-section reveal" #revealSection *ngIf="teams.length">
   <h2 class="section-title">Teams</h2>
   <div class="teams-grid">
-    <div class="team-card" *ngFor="let t of teams"
-         [style.border-top-color]="teamColor(t.constructorId)">
-      <div class="team-car-stage"
-           [style.background]="'radial-gradient(ellipse 90% 70% at 50% 100%, color-mix(in srgb, ' + teamColor(t.constructorId) + ' 30%, transparent), transparent)'">
-        <img *ngIf="teamCarImage(t.constructorId) as car" [src]="car"
-             [alt]="t.name + ' car'" class="team-car-img" loading="lazy">
-      </div>
-      <div class="team-card-footer">
-        <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="34"></app-team-badge>
-        <div class="team-card-name">{{ t.name | teamName:t.constructorId }}</div>
+    <div class="team-card clickable-driver" *ngFor="let t of teams"
+         [style.border-top-color]="teamColor(t.constructorId)"
+         (click)="openTeam(t.constructorId, t.name, t.nationality)">
+      <div class="team-logo-stage">
+        <img *ngIf="teamLogo(t.constructorId) as logo" [src]="logo" [alt]="t.name" class="team-logo-img">
       </div>
     </div>
   </div>

@@ -1,0 +1,70 @@
+<div class="tmm">
+
+  <button type="button" class="tmm-close" aria-label="Close" (click)="activeModal.dismiss()">&times;</button>
+
+  <div *ngIf="loading" class="tmm-loading">
+    <div class="spinner-border text-danger" role="status"></div>
+    <p>Loading team profile&hellip;</p>
+  </div>
+
+  <div *ngIf="failed" class="tmm-loading">
+    <p class="text-danger mb-0">Could not load team details.</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !failed">
+
+    <!-- Car, top -->
+    <div class="tmm-car-hero">
+      <img *ngIf="teamCarImage(constructorId) as car" [src]="car" [alt]="name + ' car'" class="tmm-car-img">
+    </div>
+
+    <!-- Logo + name strip -->
+    <div class="tmm-brand-strip">
+      <img *ngIf="teamLogo(constructorId) as logo" [src]="logo" [alt]="name" class="tmm-logo-img">
+      <div class="tmm-brand-text">
+        <h3 class="tmm-name">{{ (detail?.name || name) | teamName:constructorId }}</h3>
+        <div class="tmm-nationality" *ngIf="detail?.nationality || nationality">{{ detail?.nationality || nationality }}</div>
+      </div>
+    </div>
+
+    <div class="tmm-body">
+
+      <!-- Team details -->
+      <div class="tmm-stats" *ngIf="detail as d">
+        <div class="tmm-stat">
+          <span class="tmm-stat-value">{{ d.position !== null ? 'P' + d.position : '—' }}</span>
+          <span class="tmm-stat-label">Championship</span>
+        </div>
+        <div class="tmm-stat-divider"></div>
+        <div class="tmm-stat">
+          <span class="tmm-stat-value">{{ d.points ?? 0 }}</span>
+          <span class="tmm-stat-label">Points</span>
+        </div>
+        <div class="tmm-stat-divider"></div>
+        <div class="tmm-stat">
+          <span class="tmm-stat-value">{{ d.wins ?? 0 }}</span>
+          <span class="tmm-stat-label">Wins</span>
+        </div>
+      </div>
+
+      <!-- Current drivers -->
+      <ng-container *ngIf="detail as d">
+        <div class="tmm-section" *ngIf="d.drivers.length">
+          <div class="tmm-section-title">Current Drivers</div>
+          <div class="tmm-driver-row clickable-driver" *ngFor="let drv of d.drivers"
+               (click)="openDriver(drv.driverId)"
+               [style.border-left-color]="teamColor(constructorId)">
+            <span class="tmm-driver-pos">{{ drv.position !== null ? 'P' + drv.position : '—' }}</span>
+            <div class="tmm-driver-info">
+              <div class="tmm-driver-name">{{ drv.givenName }} <strong>{{ drv.familyName }}</strong></div>
+              <div class="tmm-driver-sub" *ngIf="drv.code">{{ drv.code }}<span *ngIf="drv.permanentNumber"> &middot; #{{ drv.permanentNumber }}</span></div>
+            </div>
+            <div class="tmm-driver-pts">{{ drv.points ?? 0 }} <span>pts</span></div>
+          </div>
+        </div>
+
+        <p class="tmm-note" *ngIf="!d.drivers.length">No current-season driver data available for this team yet.</p>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
