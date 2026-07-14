@@ -11,8 +11,10 @@ import { DriverDetailModalComponent } from '../../shared/driver-detail-modal/dri
 })
 export class DriversComponent implements OnInit {
 
-  drivers: Driver[] = [];
+  currentDrivers: Driver[] = [];
+  formerDrivers: Driver[] = [];
   loading = true;
+  searchTerm = '';
   teamColor = teamColor;
 
   constructor(private driverService: DriverService, private modalService: NgbModal) { }
@@ -23,6 +25,7 @@ export class DriversComponent implements OnInit {
     }
     const ref = this.modalService.open(DriverDetailModalComponent, {
       centered: true,
+      size: 'xl',
       windowClass: 'driver-modal'
     });
     ref.componentInstance.driverId = driverId;
@@ -30,8 +33,20 @@ export class DriversComponent implements OnInit {
 
   ngOnInit(): void {
     this.driverService.getDrivers().subscribe(data => {
-      this.drivers = data;
+      this.currentDrivers = data.filter(d => d.current);
+      this.formerDrivers = data.filter(d => !d.current);
       this.loading = false;
     });
+  }
+
+  get filteredFormerDrivers(): Driver[] {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      return this.formerDrivers;
+    }
+    return this.formerDrivers.filter(d =>
+      `${d.givenName} ${d.familyName}`.toLowerCase().includes(term)
+      || (d.nationality ?? '').toLowerCase().includes(term)
+    );
   }
 }

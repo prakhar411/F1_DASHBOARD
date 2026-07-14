@@ -1,5 +1,6 @@
 package com.f1dashboard.backend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -26,4 +27,7 @@ public class Driver {
     private LocalDate dateOfBirth;
     private String nationality;
     private String url;
+
+    @Column(name = "is_current")
+    private Boolean current;
 }

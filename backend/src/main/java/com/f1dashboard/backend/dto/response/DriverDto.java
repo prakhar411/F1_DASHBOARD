@@ -19,4 +19,5 @@ public class DriverDto {
     private String nationality;
     private String constructorId;
     private String constructorName;
+    private boolean current;
 }

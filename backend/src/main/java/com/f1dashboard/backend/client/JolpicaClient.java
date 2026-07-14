@@ -82,6 +82,21 @@ public class JolpicaClient {
         return (total == null || total.isBlank()) ? 0 : Integer.parseInt(total);
     }
 
+    public List<JolpicaDriverDto> fetchDriversForSeason(int season) {
+        JolpicaResponseDto response = get("/" + season + "/drivers/?limit=100");
+        if (response.getMrData().getDriverTable() == null
+                || response.getMrData().getDriverTable().getDrivers() == null) {
+            return Collections.emptyList();
+        }
+        return response.getMrData().getDriverTable().getDrivers();
+    }
+
+    public Optional<JolpicaRaceDto> fetchCircuitWinner(int season, String circuitId) {
+        JolpicaResponseDto response = get("/" + season + "/circuits/" + circuitId + "/results/1/?limit=10");
+        List<JolpicaRaceDto> races = response.getMrData().getRaceTable().getRaces();
+        return (races == null || races.isEmpty()) ? Optional.empty() : Optional.of(races.get(0));
+    }
+
     public List<String> fetchDriverSeasons(String driverId) {
         JolpicaResponseDto response = get("/drivers/" + driverId + "/seasons/?limit=100");
         if (response.getMrData().getSeasonTable() == null

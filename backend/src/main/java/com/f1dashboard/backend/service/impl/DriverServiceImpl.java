@@ -60,7 +60,8 @@ public class DriverServiceImpl implements DriverService {
                 driver.getDateOfBirth(),
                 driver.getNationality(),
                 constructor != null ? constructor.getConstructorId() : null,
-                constructor != null ? constructor.getName() : null
+                constructor != null ? constructor.getName() : null,
+                Boolean.TRUE.equals(driver.getCurrent())
         );
     }
 }

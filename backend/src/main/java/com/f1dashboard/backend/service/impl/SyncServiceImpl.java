@@ -13,12 +13,14 @@ import com.f1dashboard.backend.entity.Driver;
 import com.f1dashboard.backend.entity.DriverStanding;
 import com.f1dashboard.backend.entity.Race;
 import com.f1dashboard.backend.entity.RaceResult;
+import com.f1dashboard.backend.entity.SyncMarker;
 import com.f1dashboard.backend.repository.ConstructorRepository;
 import com.f1dashboard.backend.repository.ConstructorStandingRepository;
 import com.f1dashboard.backend.repository.DriverRepository;
 import com.f1dashboard.backend.repository.DriverStandingRepository;
 import com.f1dashboard.backend.repository.RaceRepository;
 import com.f1dashboard.backend.repository.RaceResultRepository;
+import com.f1dashboard.backend.repository.SyncMarkerRepository;
 import com.f1dashboard.backend.service.RaceResultService;
 import com.f1dashboard.backend.service.SyncService;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -44,6 +47,7 @@ public class SyncServiceImpl implements SyncService {
     private final ConstructorStandingRepository constructorStandingRepository;
     private final DriverStandingRepository driverStandingRepository;
     private final RaceResultRepository raceResultRepository;
+    private final SyncMarkerRepository syncMarkerRepository;
     private final RaceResultService raceResultService;
 
     public SyncServiceImpl(JolpicaClient jolpicaClient,
@@ -53,6 +57,7 @@ public class SyncServiceImpl implements SyncService {
                             ConstructorStandingRepository constructorStandingRepository,
                             DriverStandingRepository driverStandingRepository,
                             RaceResultRepository raceResultRepository,
+                            SyncMarkerRepository syncMarkerRepository,
                             RaceResultService raceResultService) {
         this.jolpicaClient = jolpicaClient;
         this.constructorRepository = constructorRepository;
@@ -61,6 +66,7 @@ public class SyncServiceImpl implements SyncService {
         this.constructorStandingRepository = constructorStandingRepository;
         this.driverStandingRepository = driverStandingRepository;
         this.raceResultRepository = raceResultRepository;
+        this.syncMarkerRepository = syncMarkerRepository;
         this.raceResultService = raceResultService;
     }
 
@@ -69,6 +75,7 @@ public class SyncServiceImpl implements SyncService {
     public void syncAll() {
         syncConstructors();
         syncDrivers();
+        syncHistoricalDrivers();
         Integer season = syncRaces();
         syncConstructorStandings(season);
         syncDriverStandings(season);
@@ -91,6 +98,7 @@ public class SyncServiceImpl implements SyncService {
 
     private void syncDrivers() {
         List<JolpicaDriverDto> drivers = jolpicaClient.fetchCurrentDrivers();
+        driverRepository.markAllNotCurrent();
         for (JolpicaDriverDto dto : drivers) {
             Driver entity = driverRepository.findById(dto.getDriverId()).orElseGet(Driver::new);
             entity.setDriverId(dto.getDriverId());
@@ -101,8 +109,57 @@ public class SyncServiceImpl implements SyncService {
             entity.setDateOfBirth(parseDate(dto.getDateOfBirth()));
             entity.setNationality(dto.getNationality());
             entity.setUrl(dto.getUrl());
+            entity.setCurrent(true);
             driverRepository.save(entity);
         }
+    }
+
+    private static final String HISTORICAL_DRIVERS_MARKER = "historical_drivers_2000_2025";
+    private static final int HISTORICAL_FROM_SEASON = 2000;
+    private static final int HISTORICAL_TO_SEASON = 2025;
+
+    /**
+     * One-time backfill of every driver who raced between 2000 and 2025, so the
+     * Drivers page can show a "Former Drivers" section. Historical seasons never
+     * change, so this is gated by a sync marker and skipped on every later sync.
+     */
+    private void syncHistoricalDrivers() {
+        if (syncMarkerRepository.existsById(HISTORICAL_DRIVERS_MARKER)) {
+            return;
+        }
+        log.info("Backfilling historical drivers {}-{}", HISTORICAL_FROM_SEASON, HISTORICAL_TO_SEASON);
+        for (int season = HISTORICAL_FROM_SEASON; season <= HISTORICAL_TO_SEASON; season++) {
+            try {
+                for (JolpicaDriverDto dto : jolpicaClient.fetchDriversForSeason(season)) {
+                    if (driverRepository.existsById(dto.getDriverId())) {
+                        continue;
+                    }
+                    Driver entity = new Driver();
+                    entity.setDriverId(dto.getDriverId());
+                    entity.setCode(dto.getCode());
+                    entity.setPermanentNumber(parseInt(dto.getPermanentNumber()));
+                    entity.setGivenName(dto.getGivenName());
+                    entity.setFamilyName(dto.getFamilyName());
+                    entity.setDateOfBirth(parseDate(dto.getDateOfBirth()));
+                    entity.setNationality(dto.getNationality());
+                    entity.setUrl(dto.getUrl());
+                    entity.setCurrent(false);
+                    driverRepository.save(entity);
+                }
+                Thread.sleep(350);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            } catch (Exception e) {
+                log.warn("Failed to backfill drivers for season {} — will retry on next sync", season, e);
+                return;
+            }
+        }
+        SyncMarker marker = new SyncMarker();
+        marker.setMarkerKey(HISTORICAL_DRIVERS_MARKER);
+        marker.setCompletedAt(Instant.now());
+        syncMarkerRepository.save(marker);
+        log.info("Historical driver backfill complete");
     }
 
     private Integer syncRaces() {

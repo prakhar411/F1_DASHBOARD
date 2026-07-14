@@ -1,0 +1,32 @@
+.tab-count {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+.former-search {
+  max-width: 480px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+}
+.former-search:focus {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  border-color: rgba(225, 6, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(225, 6, 0, 0.15);
+}
+.former-search::placeholder {
+  color: var(--text-muted);
+}
+
+.former-card {
+  border-left: 4px solid var(--team-default, #5a5a5a);
+}

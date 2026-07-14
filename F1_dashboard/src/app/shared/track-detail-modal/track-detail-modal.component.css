@@ -123,3 +123,77 @@
   margin: 0.9rem 0 0;
   line-height: 1.4;
 }
+
+/* Last season's winner */
+.tdm-winner {
+  margin-top: 0.9rem;
+  background: rgba(255, 183, 0, 0.06);
+  border: 1px solid rgba(255, 183, 0, 0.25);
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+}
+.tdm-winner-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #FFB700;
+  margin-bottom: 0.35rem;
+}
+.tdm-winner-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.tdm-winner-who {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+.winner-name {
+  font-weight: 800;
+  font-size: 1rem;
+}
+.winner-team {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #bbb);
+}
+.fastest-lap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #C085FF;
+  background: rgba(160, 70, 255, 0.12);
+  border: 1px solid rgba(160, 70, 255, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+}
+.lap-clock {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+/* Phone tweaks */
+@media (max-width: 480px) {
+  .tdm-hero {
+    padding: 1.5rem 1rem 1rem;
+  }
+  .tdm-header,
+  .tdm-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .tdm-name {
+    font-size: 1.25rem;
+  }
+  .stat-value {
+    font-size: 1.3rem;
+  }
+}

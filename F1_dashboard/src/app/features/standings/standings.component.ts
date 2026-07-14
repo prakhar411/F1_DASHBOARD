@@ -24,6 +24,7 @@ export class StandingsComponent implements OnInit {
     }
     const ref = this.modalService.open(DriverDetailModalComponent, {
       centered: true,
+      size: 'xl',
       windowClass: 'driver-modal'
     });
     ref.componentInstance.driverId = driverId;

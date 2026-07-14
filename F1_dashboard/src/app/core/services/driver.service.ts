@@ -13,6 +13,7 @@ export interface Driver {
   nationality: string | null;
   constructorId: string | null;
   constructorName: string | null;
+  current: boolean;
 }
 
 export interface TeamStint {
