@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import { DriverAvatarComponent } from './shared/driver-avatar/driver-avatar.comp
 import { DriverDetailModalComponent } from './shared/driver-detail-modal/driver-detail-modal.component';
 import { TrackDetailModalComponent } from './shared/track-detail-modal/track-detail-modal.component';
 import { TeamDetailModalComponent } from './shared/team-detail-modal/team-detail-modal.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { NextRaceCardComponent } from './shared/next-race-card/next-race-card.component';
 
 @NgModule({
   declarations: [
@@ -39,16 +42,21 @@ import { TeamDetailModalComponent } from './shared/team-detail-modal/team-detail
     DriverAvatarComponent,
     DriverDetailModalComponent,
     TrackDetailModalComponent,
-    TeamDetailModalComponent
+    TeamDetailModalComponent,
+    DashboardComponent,
+    NextRaceCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

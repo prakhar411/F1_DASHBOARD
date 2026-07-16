@@ -1,2 +1,121 @@
-<h1>Sign Up</h1>
-<p class="text-muted">Signup functionality is coming in Phase 2.</p>
+<div class="auth-stage">
+  <div class="auth-card auth-card-wide">
+
+      <div class="auth-header">
+        <span class="auth-stripe" aria-hidden="true"></span>
+        <h1 class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Join PitWall — standings, predictions, and more.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <div class="form-field">
+          <label for="fullName">Full name</label>
+          <input id="fullName" type="text" class="form-control" formControlName="fullName"
+                 autocomplete="name" placeholder="Lewis Hamilton"
+                 [class.is-invalid]="form.get('fullName')?.invalid && form.get('fullName')?.touched">
+          <div class="field-error" role="alert" *ngIf="form.get('fullName')?.invalid && form.get('fullName')?.touched">
+            <span *ngIf="form.get('fullName')?.errors?.['required']">Full name is required.</span>
+            <span *ngIf="form.get('fullName')?.errors?.['pattern']">Only letters and spaces are allowed.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="username">Username</label>
+          <input id="username" type="text" class="form-control" formControlName="username"
+                 autocomplete="username" placeholder="lewis44"
+                 [class.is-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+          <div class="field-hint" *ngIf="form.get('username')?.pending">Checking availability&hellip;</div>
+          <div class="field-ok" *ngIf="form.get('username')?.valid && form.get('username')?.touched && !form.get('username')?.pending">
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M13.6 3.6 6 11.2 2.4 7.6 1 9l5 5 9-9z"/></svg>
+            Username available
+          </div>
+          <div class="field-error" role="alert" *ngIf="form.get('username')?.invalid && form.get('username')?.touched && !form.get('username')?.pending">
+            <span *ngIf="form.get('username')?.errors?.['required']">Username is required.</span>
+            <span *ngIf="form.get('username')?.errors?.['pattern']">3-20 chars, lowercase letters/numbers/underscore, must start with a letter.</span>
+            <span *ngIf="form.get('username')?.errors?.['taken']">This username is already taken.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="signupEmail">Email</label>
+          <input id="signupEmail" type="text" inputmode="email" class="form-control" formControlName="email"
+                 autocomplete="email" placeholder="you@example.com"
+                 [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched">
+          <div class="field-error" role="alert" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+            <span *ngIf="form.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="form.get('email')?.errors?.['pattern']">Enter a valid email address.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="signupPassword">Password</label>
+            <input id="signupPassword" type="password" class="form-control" formControlName="password"
+                   autocomplete="new-password" placeholder="Min 8 characters"
+                   [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+            <div class="field-error" role="alert" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+              <span *ngIf="form.get('password')?.errors?.['required']">Password is required.</span>
+              <span *ngIf="form.get('password')?.errors?.['pattern']">Min 8 characters, with a letter and a number.</span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" type="password" class="form-control" formControlName="confirmPassword"
+                   autocomplete="new-password" placeholder="Re-enter password"
+                   [class.is-invalid]="form.get('confirmPassword')?.touched && (form.get('confirmPassword')?.invalid || form.errors?.['passwordMismatch'])">
+            <div class="field-error" role="alert" *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.errors?.['required']">
+              Please confirm your password.
+            </div>
+            <div class="field-error" role="alert" *ngIf="form.get('confirmPassword')?.touched && form.errors?.['passwordMismatch']">
+              Passwords don't match.
+            </div>
+          </div>
+        </div>
+
+        <div class="new-to-f1-row">
+          <label class="switch">
+            <input type="checkbox" formControlName="newToF1">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+          <div>
+            <div class="new-to-f1-label">New to F1? 🏁</div>
+            <div class="new-to-f1-hint">We'll skip the favorites — you can pick them later.</div>
+          </div>
+        </div>
+
+        <div class="favorites-row" *ngIf="!form.get('newToF1')?.value">
+          <div class="form-field">
+            <label for="favoriteTeam">Favorite team <span class="optional">(optional)</span></label>
+            <select id="favoriteTeam" class="form-control" formControlName="favoriteTeam">
+              <option value="">Select a team</option>
+              <option *ngFor="let t of teams" [value]="t.constructorId">{{ t.name }}</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="favoriteDriver">Favorite driver <span class="optional">(optional)</span></label>
+            <select id="favoriteDriver" class="form-control" formControlName="favoriteDriver">
+              <option value="">Select a driver</option>
+              <option *ngFor="let d of currentDrivers" [value]="d.driverId">{{ d.givenName }} {{ d.familyName }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="auth-banner" role="alert" *ngIf="registerFailed">
+          {{ registerErrorMessage }}
+        </div>
+
+        <button type="submit" class="auth-submit" [disabled]="submitting">
+          <span *ngIf="!submitting">Create Account</span>
+          <span *ngIf="submitting" class="submit-loading">
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+            Creating account&hellip;
+          </span>
+        </button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a routerLink="/login">Log in</a></p>
+
+  </div>
+</div>

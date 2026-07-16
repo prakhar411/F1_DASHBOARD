@@ -4,6 +4,26 @@
   border-radius: 16px;
   overflow: hidden;
   color: var(--text-primary, #fff);
+  border: 1px solid rgba(255, 183, 0, 0.16);
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+/* Trading-card holo sheen: one diagonal sweep on open */
+.ddm::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.12) 48%, rgba(255, 183, 0, 0.08) 52%, transparent 60%);
+  background-size: 250% 250%;
+  background-position: -40% -40%;
+  animation: ddm-sheen 1.1s ease-out 0.15s 1;
+}
+@keyframes ddm-sheen {
+  to { background-position: 40% 40%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ddm::after { animation: none; opacity: 0; }
 }
 
 .ddm-close {
@@ -37,11 +57,26 @@
 
 /* Header */
 .ddm-header {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   min-height: 190px;
   padding: 1.5rem 0 0 1.5rem;
+  overflow: hidden;
+}
+.ddm-number-watermark {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  z-index: 0;
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.06);
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
 }
 .ddm-header-info {
   padding-bottom: 1.3rem;
@@ -100,40 +135,77 @@
 }
 
 .ddm-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.5rem;
+}
+.stat-bar-row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.6rem;
-  margin-bottom: 1.2rem;
+  grid-template-columns: 72px 1fr 34px;
+  align-items: center;
+  gap: 0.7rem;
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: ddm-row-in 0.3s ease-out forwards;
 }
-@media (max-width: 480px) {
-  .ddm-stats { grid-template-columns: repeat(3, 1fr); }
+.stat-bar-row:nth-child(1) { animation-delay: 0.02s; }
+.stat-bar-row:nth-child(2) { animation-delay: 0.07s; }
+.stat-bar-row:nth-child(3) { animation-delay: 0.12s; }
+.stat-bar-row:nth-child(4) { animation-delay: 0.17s; }
+.stat-bar-row:nth-child(5) { animation-delay: 0.22s; }
+@keyframes ddm-row-in {
+  to { opacity: 1; transform: translateX(0); }
 }
-.stat-tile {
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  padding: 0.65rem 0.4rem;
-  text-align: center;
+@media (prefers-reduced-motion: reduce) {
+  .stat-bar-row { animation: none; opacity: 1; transform: none; }
 }
-.stat-gold {
-  border-color: rgba(255, 183, 0, 0.4);
-  background: rgba(255, 183, 0, 0.08);
+.stat-bar-label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #999);
 }
-.stat-value {
+.stat-bar-track {
+  position: relative;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.stat-bar-fill {
   display: block;
-  font-size: 1.3rem;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7a5200, #ffb700);
+  animation: ddm-bar-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.2s;
+}
+@keyframes ddm-bar-grow {
+  from { width: 0; }
+}
+.stat-gold .stat-bar-fill {
+  background: linear-gradient(90deg, #e10600, #ffb700);
+  box-shadow: 0 0 8px rgba(255, 183, 0, 0.5);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-bar-fill { animation: none; }
+}
+.stat-bar-value {
+  font-size: 0.92rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
+  text-align: right;
+  color: var(--text-primary, #fff);
 }
-.stat-label {
-  display: block;
-  font-size: 0.62rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted, #999);
-  margin-top: 0.2rem;
+.stat-gold .stat-bar-value {
+  color: #ffb700;
+}
+@media (max-width: 400px) {
+  .stat-bar-row { grid-template-columns: 58px 1fr 28px; gap: 0.5rem; }
+  .stat-bar-label { font-size: 0.58rem; }
+  .stat-bar-value { font-size: 0.8rem; }
 }
 
 /* Sections */

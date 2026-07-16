@@ -65,6 +65,29 @@
   background: linear-gradient(90deg, #e10600, #ff6b5a);
 }
 
+/* Logged-in user menu */
+.pw-user-toggle {
+  cursor: pointer;
+}
+.pw-dropdown-menu {
+  background: rgba(20, 23, 30, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 0.4rem;
+  min-width: 140px;
+}
+.pw-dropdown-menu .dropdown-item {
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.75rem;
+}
+.pw-dropdown-menu .dropdown-item:hover,
+.pw-dropdown-menu .dropdown-item:focus {
+  background: rgba(225, 6, 0, 0.15);
+  color: #fff;
+}
+
 /* Toggler */
 .pw-toggler {
   border: 1px solid rgba(255, 255, 255, 0.15);

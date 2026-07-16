@@ -43,4 +43,11 @@ export class DriverDetailModalComponent implements OnInit {
     const diff = Date.now() - dob.getTime();
     return Math.floor(diff / (365.25 * 24 * 3600 * 1000));
   }
+
+  statPct(value: number | null | undefined, cap: number): number {
+    if (value === null || value === undefined || value <= 0) {
+      return 4;
+    }
+    return Math.max(4, Math.min(100, (value / cap) * 100));
+  }
 }

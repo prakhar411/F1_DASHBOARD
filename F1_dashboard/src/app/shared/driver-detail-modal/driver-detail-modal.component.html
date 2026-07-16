@@ -12,9 +12,10 @@
   </div>
 
   <ng-container *ngIf="detail as d">
-    <!-- Header -->
+    <!-- Header: team-tinted, with the driver's number as a giant watermark -->
     <div class="ddm-header"
          [style.background]="'linear-gradient(150deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, #101018), #101018 85%)'">
+      <span class="ddm-number-watermark" *ngIf="d.permanentNumber" aria-hidden="true">{{ d.permanentNumber }}</span>
       <div class="ddm-header-info">
         <div class="ddm-number" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</div>
         <h3 class="ddm-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></h3>
@@ -34,27 +35,32 @@
 
     <div class="ddm-body">
 
-      <!-- Career stat tiles -->
+      <!-- Career stats, as an animated horizontal stat readout -->
       <div class="ddm-stats">
-        <div class="stat-tile stat-gold">
-          <span class="stat-value">{{ d.championships ?? '—' }}</span>
-          <span class="stat-label">🏆 Titles</span>
+        <div class="stat-bar-row stat-gold">
+          <span class="stat-bar-label">Titles</span>
+          <span class="stat-bar-track"><span class="stat-bar-fill" [style.width.%]="statPct(d.championships, 7)"></span></span>
+          <span class="stat-bar-value">{{ d.championships ?? '—' }}</span>
         </div>
-        <div class="stat-tile">
-          <span class="stat-value">{{ d.careerWins ?? '—' }}</span>
-          <span class="stat-label">Wins</span>
+        <div class="stat-bar-row">
+          <span class="stat-bar-label">Wins</span>
+          <span class="stat-bar-track"><span class="stat-bar-fill" [style.width.%]="statPct(d.careerWins, 105)"></span></span>
+          <span class="stat-bar-value">{{ d.careerWins ?? '—' }}</span>
         </div>
-        <div class="stat-tile">
-          <span class="stat-value">{{ d.careerPodiums ?? '—' }}</span>
-          <span class="stat-label">Podiums</span>
+        <div class="stat-bar-row">
+          <span class="stat-bar-label">Podiums</span>
+          <span class="stat-bar-track"><span class="stat-bar-fill" [style.width.%]="statPct(d.careerPodiums, 200)"></span></span>
+          <span class="stat-bar-value">{{ d.careerPodiums ?? '—' }}</span>
         </div>
-        <div class="stat-tile">
-          <span class="stat-value">{{ d.careerPoints ?? '—' }}</span>
-          <span class="stat-label">Career Pts</span>
+        <div class="stat-bar-row">
+          <span class="stat-bar-label">Career Pts</span>
+          <span class="stat-bar-track"><span class="stat-bar-fill" [style.width.%]="statPct(d.careerPoints, 5000)"></span></span>
+          <span class="stat-bar-value">{{ d.careerPoints ?? '—' }}</span>
         </div>
-        <div class="stat-tile">
-          <span class="stat-value">{{ d.seasonsCount ?? '—' }}</span>
-          <span class="stat-label">Seasons</span>
+        <div class="stat-bar-row">
+          <span class="stat-bar-label">Seasons</span>
+          <span class="stat-bar-track"><span class="stat-bar-fill" [style.width.%]="statPct(d.seasonsCount, 20)"></span></span>
+          <span class="stat-bar-value">{{ d.seasonsCount ?? '—' }}</span>
         </div>
       </div>
 

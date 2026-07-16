@@ -8,6 +8,8 @@ import { TeamsComponent } from './features/teams/teams.component';
 import { CalendarComponent } from './features/calendar/calendar.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { SignupComponent } from './features/auth/signup/signup.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,7 +18,8 @@ const routes: Routes = [
   { path: 'teams', component: TeamsComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

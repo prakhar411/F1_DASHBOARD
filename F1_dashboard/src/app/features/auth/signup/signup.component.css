@@ -1,0 +1,294 @@
+.auth-stage {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--surface-1);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 40%);
+  border: 1px solid var(--border-hairline);
+  border-top: 3px solid var(--f1-red);
+  border-radius: 16px;
+  padding: 2rem 1.75rem 1.75rem;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(14px);
+  animation: auth-card-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.auth-card-wide {
+  max-width: 480px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes auth-card-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+.auth-stripe {
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(90deg, var(--f1-red), #ff6b5a);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(225, 6, 0, 0.4);
+}
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+  color: var(--text-primary);
+}
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  margin-bottom: 1.1rem;
+}
+.form-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+.form-field label .optional {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.form-field .form-control {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  min-height: 44px;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+select.form-control {
+  appearance: auto;
+}
+.form-field .form-control::placeholder {
+  color: var(--text-muted);
+}
+.form-field .form-control:focus {
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+  border-color: var(--f1-red);
+  box-shadow: 0 0 0 3px rgba(225, 6, 0, 0.18);
+  outline: none;
+}
+.form-field .form-control.is-invalid {
+  border-color: #ff4d4a;
+  background-image: none;
+}
+.form-field .form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(255, 77, 74, 0.18);
+}
+
+.field-error {
+  color: #ff4d4a;
+  font-size: 0.78rem;
+  margin-top: 0.4rem;
+}
+.field-hint {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin-top: 0.4rem;
+}
+.field-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #3ecf6f;
+  font-size: 0.78rem;
+  margin-top: 0.4rem;
+}
+
+/* ---------- New to F1 toggle ---------- */
+.new-to-f1-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-hairline);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.1rem;
+}
+.new-to-f1-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.new-to-f1-hint {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  margin-top: 0.1rem;
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-track {
+  display: block;
+  width: 40px;
+  height: 22px;
+  background: var(--border-hairline);
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch input:checked + .switch-track {
+  background: var(--f1-red);
+}
+.switch input:checked + .switch-track .switch-thumb {
+  transform: translateX(18px);
+}
+.switch input:focus-visible + .switch-track {
+  box-shadow: 0 0 0 3px rgba(225, 6, 0, 0.3);
+}
+
+.favorites-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+@media (max-width: 480px) {
+  .favorites-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-banner {
+  background: rgba(225, 6, 0, 0.1);
+  border: 1px solid rgba(225, 6, 0, 0.35);
+  color: #ff8783;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 1.15rem;
+  text-align: center;
+}
+
+.auth-submit {
+  width: 100%;
+  min-height: 46px;
+  background: linear-gradient(135deg, var(--f1-red), #b80500);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(225, 6, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.3s, opacity 0.2s;
+  cursor: pointer;
+}
+.auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(225, 6, 0, 0.55);
+}
+.auth-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+.submit-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 1.4rem 0 0;
+}
+.auth-switch a {
+  color: var(--f1-red);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- OTP step ---------- */
+.otp-input {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+}
+.resend-link {
+  background: none;
+  border: none;
+  color: var(--f1-red);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0;
+  cursor: pointer;
+}
+.resend-link:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+.resend-link:not(:disabled):hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 1.6rem 1.25rem 1.4rem;
+  }
+}
