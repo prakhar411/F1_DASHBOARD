@@ -1,0 +1,125 @@
+<div *ngIf="loading" class="dash-loading">
+  <div class="spinner-border text-danger" role="status"></div>
+  <p>Loading your dashboard&hellip;</p>
+</div>
+
+<ng-container *ngIf="!loading && profile as p">
+
+  <!-- ========== NEW TO F1 ========== -->
+  <ng-container *ngIf="p.newToF1">
+    <div class="dash-hero">
+      <span class="dash-stripe" aria-hidden="true"></span>
+      <h1 class="dash-title">Welcome, {{ p.fullName }} 🏁</h1>
+      <p class="dash-subtitle">You're new to F1 — let's get you up to speed.</p>
+    </div>
+
+    <div class="dash-grid">
+
+      <!-- Next race, distinctive digital-clock countdown -->
+      <app-next-race-card></app-next-race-card>
+
+      <!-- Top 3 standings — an actual podium, the hero content card -->
+      <div class="dash-card dash-card-top3" *ngIf="topStandings.length">
+        <div class="dash-card-label">Current Top 3</div>
+
+        <div class="podium-stage">
+          <!-- P2, left -->
+          <div class="podium-slot" *ngIf="podiumP2 as d">
+            <div class="podium-racer clickable-driver" (click)="openDriver(d.driverId)">
+              <div class="podium-photo-frame"
+                   [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+                <img *ngIf="driverPhoto(d.driverId) as photo; else p2Initials" [src]="photo"
+                     [alt]="d.givenName + ' ' + d.familyName" class="podium-photo">
+                <ng-template #p2Initials><span class="podium-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span></ng-template>
+              </div>
+              <div class="podium-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+              <div class="podium-pts">{{ d.points }} <span>pts</span></div>
+            </div>
+            <div class="podium-pedestal pedestal-silver">
+              <span class="pedestal-num">2</span>
+            </div>
+          </div>
+
+          <!-- P1, center, tallest -->
+          <div class="podium-slot podium-slot-first" *ngIf="podiumP1 as d">
+            <div class="podium-racer clickable-driver" (click)="openDriver(d.driverId)">
+              <span class="podium-crown" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 18h20l-1.5-9-5 4-3.5-7-3.5 7-5-4z"/></svg>
+              </span>
+              <div class="podium-photo-frame podium-photo-frame-lg"
+                   [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+                <img *ngIf="driverPhoto(d.driverId) as photo; else p1Initials" [src]="photo"
+                     [alt]="d.givenName + ' ' + d.familyName" class="podium-photo">
+                <ng-template #p1Initials><span class="podium-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span></ng-template>
+              </div>
+              <div class="podium-name podium-name-lg">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+              <div class="podium-pts podium-pts-lg">{{ d.points }} <span>pts</span></div>
+            </div>
+            <div class="podium-pedestal pedestal-gold">
+              <span class="pedestal-num">1</span>
+            </div>
+          </div>
+
+          <!-- P3, right, shortest -->
+          <div class="podium-slot" *ngIf="podiumP3 as d">
+            <div class="podium-racer clickable-driver" (click)="openDriver(d.driverId)">
+              <div class="podium-photo-frame"
+                   [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+                <img *ngIf="driverPhoto(d.driverId) as photo; else p3Initials" [src]="photo"
+                     [alt]="d.givenName + ' ' + d.familyName" class="podium-photo">
+                <ng-template #p3Initials><span class="podium-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span></ng-template>
+              </div>
+              <div class="podium-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+              <div class="podium-pts">{{ d.points }} <span>pts</span></div>
+            </div>
+            <div class="podium-pedestal pedestal-bronze">
+              <span class="pedestal-num">3</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="dash-hint">Race winner gets 25 points, down to 1 point for 10th place.</p>
+      </div>
+
+      <!-- Recap + nudge + teaser: one clean row of equal-height cards -->
+      <div class="dash-row-trio">
+
+        <!-- Last race recap, plain language + mini podium photos -->
+        <div class="dash-card dash-card-recap" *ngIf="recapSummary as summary">
+          <div class="dash-card-label">Last Race &mdash; {{ lastRaceRecap?.raceName }}</div>
+          <div class="recap-avatars">
+            <div class="recap-avatar clickable-driver" *ngFor="let podiumFinisher of lastRaceRecap?.podium"
+                 (click)="openDriver(podiumFinisher.driverId)"
+                 [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(podiumFinisher.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+              <span class="recap-avatar-pos">P{{ podiumFinisher.position }}</span>
+              <img *ngIf="driverPhoto(podiumFinisher.driverId) as photo" [src]="photo"
+                   [alt]="podiumFinisher.givenName + ' ' + podiumFinisher.familyName" class="recap-avatar-photo">
+            </div>
+          </div>
+          <p class="recap-text">{{ summary }}</p>
+        </div>
+
+        <a class="dash-card dash-nudge" routerLink="/teams" *ngIf="!p.favoriteTeam">
+          <div class="dash-card-label">Not Following Anyone Yet?</div>
+          <p class="recap-text">Explore the grid and find a team to root for.</p>
+          <span class="dash-nudge-cta">Browse Teams &rarr;</span>
+        </a>
+
+        <div class="dash-card dash-teaser">
+          <div class="dash-card-label">Coming Soon</div>
+          <p class="recap-text">Predict race results and compete with friends on the leaderboard.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </ng-container>
+
+  <!-- ========== EXPERIENCED FAN ========== -->
+  <div class="dash-hero" *ngIf="!p.newToF1">
+    <span class="dash-stripe" aria-hidden="true"></span>
+    <h1 class="dash-title">Welcome back, {{ p.fullName }}</h1>
+    <p class="dash-subtitle" *ngIf="p.favoriteTeam">Following {{ p.favoriteTeam }}.</p>
+  </div>
+
+</ng-container>

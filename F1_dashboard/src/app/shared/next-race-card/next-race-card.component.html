@@ -1,0 +1,43 @@
+<div class="nrc-card" *ngIf="nextRace">
+  <div class="nrc-header">
+    <div class="nrc-header-tags">
+      <span class="nrc-round">Round {{ nextRace.round }}</span>
+      <span class="nrc-date">{{ nextRace.raceDateTimeUtc | date:'EEE, d MMM' }} &middot; {{ nextRace.raceDateTimeUtc | date:'HH:mm (zzz)' }}</span>
+    </div>
+    <button type="button" class="nrc-track-btn" (click)="openTrack()">
+      <svg class="nrc-track-icon" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 8c0-2 1.5-5 4-5s2 2 4 2 3-2 4 0-1 4-3 4-2-2-4-2-4 1-5 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      View Track
+    </button>
+  </div>
+
+  <h3 class="nrc-race-name">{{ nextRace.raceName }}</h3>
+  <p class="nrc-location">{{ nextRace.circuitName }} &middot; {{ nextRace.locality }}, {{ nextRace.country }}</p>
+
+  <!-- F1 start-gantry countdown: 5 lights fill in as the race nears, plus a slim single-line readout -->
+  <div class="nrc-countdown" *ngIf="countdown">
+    <div class="nrc-gantry" [class.armed]="litCount === 5" aria-hidden="true">
+      <span class="gantry-light" *ngFor="let i of gantryIndices" [class.lit]="i < litCount"></span>
+    </div>
+    <div class="nrc-readout" role="timer"
+         [attr.aria-label]="countdown.days + ' days ' + countdown.hours + ' hours ' + countdown.minutes + ' minutes ' + countdown.seconds + ' seconds until race'">
+      <span class="ro-seg"><strong>{{ pad(countdown.days) }}</strong>d</span>
+      <span class="ro-sep">:</span>
+      <span class="ro-seg"><strong>{{ pad(countdown.hours) }}</strong>h</span>
+      <span class="ro-sep">:</span>
+      <span class="ro-seg"><strong>{{ pad(countdown.minutes) }}</strong>m</span>
+      <span class="ro-sep">:</span>
+      <span class="ro-seg ro-seg-sec" [class.pulse-a]="tick" [class.pulse-b]="!tick"><strong>{{ pad(countdown.seconds) }}</strong>s</span>
+    </div>
+  </div>
+
+  <div class="nrc-live" *ngIf="raceIsLive">
+    <span class="nrc-live-dot"></span> Race is Live
+    <a class="nrc-live-link" href="https://www.formula1.com/en/latest/live" target="_blank" rel="noopener">Watch &rarr;</a>
+  </div>
+</div>
+
+<div class="nrc-card nrc-empty" *ngIf="noUpcomingRace">
+  <p class="text-muted mb-0">No upcoming race scheduled.</p>
+</div>

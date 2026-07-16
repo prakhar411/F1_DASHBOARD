@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg pw-navbar">
   <div class="container">
-    <a class="navbar-brand pw-brand" routerLink="/">
+    <a class="navbar-brand pw-brand" [routerLink]="(currentUserName$ | async) ? '/dashboard' : '/'">
       <span class="brand-stripe" aria-hidden="true"></span>
       <span class="brand-pit">Pit</span><span class="brand-wall">Wall</span>
     </a>
@@ -23,9 +23,22 @@
         </li>
       </ul>
       <ul class="navbar-nav align-items-lg-center">
-        <li class="nav-item">
-          <a class="nav-link pw-link" routerLink="/login" routerLinkActive="active">Login</a>
-        </li>
+        <ng-container *ngIf="currentUserName$ | async as name; else loggedOut">
+          <li class="nav-item">
+            <a class="nav-link pw-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          </li>
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link pw-link pw-user-toggle" ngbDropdownToggle role="button">{{ name }}</a>
+            <div ngbDropdownMenu class="pw-dropdown-menu">
+              <button type="button" ngbDropdownItem (click)="logout()">Logout</button>
+            </div>
+          </li>
+        </ng-container>
+        <ng-template #loggedOut>
+          <li class="nav-item">
+            <a class="nav-link pw-link" routerLink="/login" routerLinkActive="active">Login</a>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </div>
