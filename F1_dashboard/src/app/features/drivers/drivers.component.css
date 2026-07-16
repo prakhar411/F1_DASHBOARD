@@ -1,14 +1,194 @@
-.tab-count {
+/* ==================== Page head + segmented control ==================== */
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text-primary);
+}
+.page-title-bar {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  padding: 0.05rem 0.55rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  margin-left: 0.35rem;
-  vertical-align: middle;
+  width: 6px;
+  height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--f1-red), #ffb700);
+  flex: none;
 }
 
+.seg-control {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: 999px;
+  padding: 4px;
+}
+.seg-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.42rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.seg-btn:hover { color: var(--text-primary); }
+.seg-btn.active {
+  background: linear-gradient(135deg, var(--f1-red), #b80500);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(225, 6, 0, 0.35);
+}
+.seg-count {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0.02rem 0.5rem;
+  font-size: 0.68rem;
+  margin-left: 0.3rem;
+}
+
+/* ==================== Current grid: trading cards ==================== */
+.dgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.1rem;
+}
+.dcard {
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: 14px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: dc-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+}
+.dcard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+@keyframes dc-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dcard { animation: none; opacity: 1; transform: none; }
+}
+
+.dcard-top {
+  position: relative;
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+.dcard-num {
+  position: absolute;
+  top: -1rem;
+  left: 0.2rem;
+  font-size: 5.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.18);
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+}
+.dcard-photo {
+  position: relative;
+  z-index: 1;
+  height: 140px;
+  width: auto;
+  object-fit: cover;
+  object-position: top;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  transition: transform 0.25s;
+}
+.dcard:hover .dcard-photo {
+  transform: scale(1.05) translateY(-2px);
+}
+.dcard-initials {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.85);
+  padding-bottom: 2.6rem;
+}
+.dcard-code {
+  position: absolute;
+  z-index: 2;
+  top: 0.6rem;
+  right: 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.16rem 0.5rem;
+  border-radius: 6px;
+}
+
+.dcard-body {
+  padding: 0.85rem 1rem 1rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.06);
+}
+.dcard-name {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dcard-name strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.dcard-team {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dcard-swatch {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex: none;
+}
+.dcard-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ==================== Former drivers ==================== */
 .former-search {
   max-width: 480px;
   background: var(--surface-1);
@@ -27,6 +207,33 @@
   color: var(--text-muted);
 }
 
-.former-card {
-  border-left: 4px solid var(--team-default, #5a5a5a);
+.fgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.7rem;
 }
+.fcard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.fcard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+.fcard-info { min-width: 0; }
+.fcard-name {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fcard-name strong { font-weight: 800; }
+.fcard-meta { color: var(--text-muted); }

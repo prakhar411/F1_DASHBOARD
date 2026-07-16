@@ -22,4 +22,8 @@ export class ProfileService {
   getMe(): Observable<Profile> {
     return this.http.get<Profile>(`${environment.apiUrl}/profile/me`);
   }
+
+  updateFavorites(favorites: { favoriteTeam?: string; favoriteDriver?: string }): Observable<Profile> {
+    return this.http.patch<Profile>(`${environment.apiUrl}/profile/favorites`, favorites);
+  }
 }

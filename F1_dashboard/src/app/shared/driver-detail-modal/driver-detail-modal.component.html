@@ -12,11 +12,16 @@
   </div>
 
   <ng-container *ngIf="detail as d">
-    <!-- Header: team-tinted, with the driver's number as a giant watermark -->
+    <!-- Identity panel: team-tinted, racing stripes, outlined number watermark -->
     <div class="ddm-header"
          [style.background]="'linear-gradient(150deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 55%, #101018), #101018 85%)'">
+      <span class="ddm-stripes" aria-hidden="true"></span>
       <span class="ddm-number-watermark" *ngIf="d.permanentNumber" aria-hidden="true">{{ d.permanentNumber }}</span>
+
       <div class="ddm-header-info">
+        <div class="ddm-pos-chip" *ngIf="d.standingPosition !== null">
+          P{{ d.standingPosition }} <span>&middot; {{ d.standingPoints }} pts</span>
+        </div>
         <div class="ddm-number" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</div>
         <h3 class="ddm-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></h3>
         <div class="ddm-sub">
@@ -35,7 +40,7 @@
 
     <div class="ddm-body">
 
-      <!-- Career stats, as an animated horizontal stat readout -->
+      <!-- Career stats, animated telemetry bars -->
       <div class="ddm-stats">
         <div class="stat-bar-row stat-gold">
           <span class="stat-bar-label">Titles</span>

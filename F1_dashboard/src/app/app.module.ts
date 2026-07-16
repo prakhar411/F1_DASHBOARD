@@ -24,6 +24,8 @@ import { TrackDetailModalComponent } from './shared/track-detail-modal/track-det
 import { TeamDetailModalComponent } from './shared/team-detail-modal/team-detail-modal.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NextRaceCardComponent } from './shared/next-race-card/next-race-card.component';
+import { F1101Component } from './features/f1-101/f1-101.component';
+import { FavoritePickerModalComponent } from './shared/favorite-picker-modal/favorite-picker-modal.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { NextRaceCardComponent } from './shared/next-race-card/next-race-card.co
     TrackDetailModalComponent,
     TeamDetailModalComponent,
     DashboardComponent,
-    NextRaceCardComponent
+    NextRaceCardComponent,
+    F1101Component,
+    FavoritePickerModalComponent
   ],
   imports: [
     BrowserModule,

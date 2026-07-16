@@ -14,6 +14,10 @@ export interface Race {
   raceDate: string;
   raceTime: string | null;
   raceDateTimeUtc: string;
+  winnerDriverId: string | null;
+  winnerName: string | null;
+  lastYearWinnerName: string | null;
+  lastYearSeason: number | null;
 }
 
 export interface PodiumFinisher {
