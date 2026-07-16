@@ -1,0 +1,77 @@
+<div class="fpm">
+  <button type="button" class="fpm-close" aria-label="Close" (click)="activeModal.dismiss()">&times;</button>
+
+  <div class="fpm-header">
+    <span class="fpm-kicker">{{ mode === 'team' ? 'Pick Your Team' : 'Pick Your Driver' }}</span>
+    <h3 class="fpm-title">{{ mode === 'team' ? 'Who are you rooting for?' : 'Whose corner are you in?' }}</h3>
+    <p class="fpm-sub">{{ mode === 'team' ? 'Choose the team you\'ll follow all season — you can change it anytime.' : 'Pick the driver you\'ll cheer for every race weekend.' }}</p>
+  </div>
+
+  <div class="fpm-loading" *ngIf="loading">
+    <div class="spinner-border text-danger" role="status"></div>
+  </div>
+
+  <!-- ===== Team tiles ===== -->
+  <div class="fpm-grid fpm-grid-teams" *ngIf="!loading && mode === 'team'">
+    <button type="button" class="fpm-tile" *ngFor="let t of teams; let i = index"
+            [class.selected]="selectedName === teamDisplayName(t.constructorId, t.name)"
+            [style.--tile-color]="teamColor(t.constructorId)"
+            [style.animation-delay.ms]="i * 30"
+            (click)="select(teamDisplayName(t.constructorId, t.name))">
+      <span class="fpm-tile-glow" aria-hidden="true"></span>
+      <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="44"></app-team-badge>
+      <span class="fpm-tile-name">{{ t.name | teamName:t.constructorId }}</span>
+      <span class="fpm-check" aria-hidden="true">
+        <svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- ===== Driver tiles ===== -->
+  <div class="fpm-grid fpm-grid-drivers" *ngIf="!loading && mode === 'driver'">
+    <button type="button" class="fpm-tile fpm-tile-driver" *ngFor="let d of drivers; let i = index"
+            [class.selected]="selectedName === d.givenName + ' ' + d.familyName"
+            [style.--tile-color]="teamColor(d.constructorId)"
+            [style.animation-delay.ms]="i * 25"
+            (click)="select(d.givenName + ' ' + d.familyName)">
+
+      <!-- Photo-forward top: team gradient, outlined number watermark, full driver cutout -->
+      <span class="fpm-driver-top"
+            [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 60%, #14141a), #14141a 92%)'">
+        <span class="fpm-driver-num" *ngIf="d.permanentNumber" aria-hidden="true">{{ d.permanentNumber }}</span>
+        <img *ngIf="driverPhoto(d.driverId) as photo; else fpmInitials" [src]="photo"
+             [alt]="d.givenName + ' ' + d.familyName" class="fpm-driver-img">
+        <ng-template #fpmInitials><span class="fpm-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span></ng-template>
+      </span>
+
+      <span class="fpm-driver-body">
+        <span class="fpm-tile-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></span>
+        <span class="fpm-tile-team" *ngIf="d.constructorName">
+          <span class="fpm-team-swatch" [style.background]="teamColor(d.constructorId)" aria-hidden="true"></span>
+          {{ d.constructorName | teamName:d.constructorId }}
+        </span>
+      </span>
+
+      <span class="fpm-check" aria-hidden="true">
+        <svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Confirm bar -->
+  <div class="fpm-footer" *ngIf="!loading">
+    <span class="fpm-selection" *ngIf="selectedName; else fpmHint">
+      Selected: <strong>{{ selectedName }}</strong>
+    </span>
+    <ng-template #fpmHint>
+      <span class="fpm-selection fpm-selection-empty">Tap a {{ mode }} to select</span>
+    </ng-template>
+
+    <span class="fpm-error" *ngIf="saveFailed">Could not save — try again.</span>
+
+    <button type="button" class="fpm-confirm" [disabled]="!selectedName || saving" (click)="confirm()">
+      <span *ngIf="!saving">Confirm</span>
+      <span *ngIf="saving" class="spinner-border spinner-border-sm" role="status"></span>
+    </button>
+  </div>
+</div>

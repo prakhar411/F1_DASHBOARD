@@ -1,4 +1,264 @@
-.next-race-row {
-  border-left: 4px solid #e10600;
-  background-color: rgba(225, 6, 0, 0.08);
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text-primary);
+}
+.page-title-bar {
+  display: inline-block;
+  width: 6px;
+  height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--f1-red), #ffb700);
+  flex: none;
+}
+
+/* ==================== Season timeline ==================== */
+.cal-timeline {
+  position: relative;
+  padding-left: 30px;
+}
+/* the spine */
+.cal-timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 9px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+}
+
+.cal-item {
+  position: relative;
+  margin-bottom: 0.65rem;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: cal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes cal-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-item { animation: none; opacity: 1; transform: none; }
+}
+
+.cal-marker {
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.cal-marker-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+.cal-check {
+  width: 11px;
+  height: 11px;
+  color: #4ade80;
+}
+.cal-done .cal-marker-dot {
+  border-color: rgba(74, 222, 128, 0.5);
+  background: rgba(74, 222, 128, 0.08);
+}
+.cal-next .cal-marker-dot {
+  border-color: var(--f1-red);
+  background: rgba(225, 6, 0, 0.18);
+  box-shadow: 0 0 10px rgba(225, 6, 0, 0.7);
+  animation: cal-marker-pulse 1.5s ease-in-out infinite;
+}
+@keyframes cal-marker-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(225, 6, 0, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(225, 6, 0, 0.95); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-next .cal-marker-dot { animation: none; }
+}
+
+/* ==================== Race card ==================== */
+.cal-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.cal-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
+}
+.cal-done .cal-card {
+  opacity: 0.78;
+}
+.cal-done .cal-card:hover {
+  opacity: 1;
+}
+.cal-next .cal-card {
+  background: linear-gradient(90deg, rgba(225, 6, 0, 0.12), var(--surface-1) 60%);
+  border-color: rgba(225, 6, 0, 0.45);
+}
+
+.cal-round {
+  flex: none;
+  min-width: 44px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.3rem 0.4rem;
+}
+.cal-next .cal-round {
+  color: #fff;
+  background: linear-gradient(135deg, var(--f1-red), #b80500);
+  border-color: transparent;
+}
+
+.cal-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cal-race-name {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-circuit {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Winner strip on finished races */
+.cal-winners {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+.cal-winner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ffb700;
+  background: rgba(255, 183, 0, 0.09);
+  border: 1px solid rgba(255, 183, 0, 0.32);
+  padding: 0.16rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.cal-trophy {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+.cal-winner-prev {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 0.16rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cal-when {
+  flex: none;
+  text-align: right;
+}
+.cal-date {
+  font-size: 0.88rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.cal-time {
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.cal-status {
+  flex: none;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.24rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.cal-status-done {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+.cal-status-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #fff;
+  background: rgba(225, 6, 0, 0.18);
+  border: 1px solid rgba(225, 6, 0, 0.5);
+}
+.cal-next-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--f1-red);
+  animation: cal-dot 1.2s ease-in-out infinite;
+}
+@keyframes cal-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-next-dot { animation: none; }
+}
+.cal-status-upcoming {
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 560px) {
+  .cal-status { display: none; }
+  .cal-next .cal-status { display: inline-flex; }
+  .cal-card { gap: 0.6rem; padding: 0.6rem 0.7rem; }
+  .cal-circuit { max-width: 180px; }
 }

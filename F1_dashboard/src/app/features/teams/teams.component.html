@@ -1,17 +1,38 @@
-<h1 class="mb-4">Teams</h1>
+<div class="page-head">
+  <h1 class="page-title"><span class="page-title-bar" aria-hidden="true"></span>Teams</h1>
+</div>
 
 <div *ngIf="loading" class="text-muted">Loading teams&hellip;</div>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-  <div class="col" *ngFor="let t of teams">
-    <div class="card h-100 team-accent" [style.border-left-color]="teamColor(t.constructorId)">
-      <div class="card-body d-flex align-items-center gap-3">
-        <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="48"></app-team-badge>
-        <div>
-          <h5 class="card-title mb-0">{{ t.name | teamName:t.constructorId }}</h5>
-          <p class="card-text text-muted mb-0" *ngIf="t.nationality">{{ t.nationality }}</p>
+<div class="tgrid" *ngIf="!loading">
+  <div class="tcard" *ngFor="let t of teams; let i = index" [style.animation-delay.ms]="i * 45">
+
+    <!-- Team-color banner with oversized watermark name -->
+    <div class="tcard-band"
+         [style.background]="'linear-gradient(140deg, color-mix(in srgb, ' + teamColor(t.constructorId) + ' 65%, #101014), #101014 92%)'">
+      <span class="tcard-watermark" aria-hidden="true">{{ t.name | teamName:t.constructorId }}</span>
+      <app-team-badge [constructorId]="t.constructorId" [name]="t.name" [size]="52"></app-team-badge>
+    </div>
+
+    <div class="tcard-body">
+      <div class="tcard-name">{{ t.name | teamName:t.constructorId }}</div>
+      <div class="tcard-nat" *ngIf="t.nationality">{{ t.nationality }}</div>
+
+      <!-- Current line-up -->
+      <div class="tcard-lineup" *ngIf="lineup(t.constructorId).length">
+        <div class="tcard-driver clickable-driver" *ngFor="let d of lineup(t.constructorId)"
+             (click)="openDriver(d.driverId)">
+          <span class="tcard-driver-photo"
+                [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(t.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+            <img *ngIf="driverPhoto(d.driverId) as photo; else tdInitials" [src]="photo"
+                 [alt]="d.givenName + ' ' + d.familyName">
+            <ng-template #tdInitials><span class="tcard-driver-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span></ng-template>
+          </span>
+          <span class="tcard-driver-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></span>
+          <span class="tcard-driver-num" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</span>
         </div>
       </div>
     </div>
+
   </div>
 </div>

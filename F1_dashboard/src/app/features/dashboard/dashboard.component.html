@@ -7,20 +7,71 @@
 
   <!-- ========== NEW TO F1 ========== -->
   <ng-container *ngIf="p.newToF1">
-    <div class="dash-hero">
-      <span class="dash-stripe" aria-hidden="true"></span>
-      <h1 class="dash-title">Welcome, {{ p.fullName }} 🏁</h1>
-      <p class="dash-subtitle">You're new to F1 — let's get you up to speed.</p>
-    </div>
 
-    <div class="dash-grid">
+    <!-- Race Control hero: welcome copy left, next-race widget docked right -->
+    <section class="rc-hero">
+      <div class="rc-hero-glow" aria-hidden="true"></div>
+      <div class="rc-hero-speedlines" aria-hidden="true"></div>
 
-      <!-- Next race, distinctive digital-clock countdown -->
-      <app-next-race-card></app-next-race-card>
+      <div class="rc-hero-inner">
+        <div class="rc-hero-copy">
+          <span class="rc-tag" *ngIf="learning.level$ | async as lvl">
+            <span class="rc-tag-dot" aria-hidden="true"></span>
+            {{ lvl.certified ? 'Certified Race Fan' : 'Level ' + lvl.levelNumber + ' · ' + lvl.ladder }}
+          </span>
+          <h1 class="rc-title">Welcome, <span class="rc-title-name">{{ p.fullName }}</span></h1>
+          <p class="rc-sub">You're new to F1 &mdash; let's get you up to speed.</p>
+          <div class="rc-chips">
+            <a routerLink="/f1-101" class="rc-chip rc-chip-gold">F1 101 &mdash; Learn the Basics</a>
+            <a routerLink="/standings" class="rc-chip">Standings</a>
+            <a routerLink="/calendar" class="rc-chip">Calendar</a>
+            <a routerLink="/drivers" class="rc-chip">Drivers</a>
+            <a routerLink="/teams" class="rc-chip">Teams</a>
+          </div>
+        </div>
 
-      <!-- Top 3 standings — an actual podium, the hero content card -->
-      <div class="dash-card dash-card-top3" *ngIf="topStandings.length">
-        <div class="dash-card-label">Current Top 3</div>
+        <div class="rc-hero-widget">
+          <app-next-race-card></app-next-race-card>
+        </div>
+      </div>
+
+      <div class="rc-checker" aria-hidden="true"></div>
+    </section>
+
+    <!-- Racing Licence: level + progress toward Certified Race Fan -->
+    <a routerLink="/f1-101" class="lic-strip" *ngIf="learning.level$ | async as lvl">
+      <div class="lic-ring" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+          <circle cx="32" cy="32" r="26" fill="none" stroke="url(#licGrad)" stroke-width="5"
+                  stroke-linecap="round" stroke-dasharray="163.4"
+                  [attr.stroke-dashoffset]="163.4 - (163.4 * lvl.pct / 100)"
+                  transform="rotate(-90 32 32)"/>
+          <defs>
+            <linearGradient id="licGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#e10600"/>
+              <stop offset="100%" stop-color="#ffb700"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="lic-ring-pct">{{ lvl.pct }}%</span>
+      </div>
+      <div class="lic-info">
+        <div class="lic-level" [class.lic-level-certified]="lvl.certified">
+          {{ lvl.certified ? 'Certified Race Fan' : 'Level ' + lvl.levelNumber + ' — ' + lvl.ladder }}
+        </div>
+        <div class="lic-sub">
+          {{ lvl.certified ? 'Every stage complete — you know your stuff.' : ('Current stage: ' + lvl.stageTitle + ' · ' + lvl.readCount + '/' + lvl.totalCount + ' terms learned') }}
+        </div>
+      </div>
+      <span class="lic-cta">{{ lvl.certified ? 'Review the Path' : 'Continue Learning' }} &rarr;</span>
+    </a>
+
+    <!-- Main row: podium featured left, last-race results board right -->
+    <div class="rc-grid">
+
+      <div class="rc-card rc-card-top3" *ngIf="topStandings.length">
+        <div class="rc-label"><span class="rc-label-bar" aria-hidden="true"></span>Current Top 3</div>
 
         <div class="podium-stage">
           <!-- P2, left -->
@@ -78,48 +129,138 @@
           </div>
         </div>
 
-        <p class="dash-hint">Race winner gets 25 points, down to 1 point for 10th place.</p>
+        <p class="dash-hint">Race winner gets 25 points, down to 1 point for 10th place.
+          <a routerLink="/f1-101" class="dash-hint-link">How scoring works &rarr;</a>
+        </p>
       </div>
 
-      <!-- Recap + nudge + teaser: one clean row of equal-height cards -->
-      <div class="dash-row-trio">
+      <!-- Last race: timing-screen style results board -->
+      <div class="rc-card rc-card-race" *ngIf="lastRaceRecap as recap">
+        <div class="rc-label"><span class="rc-label-bar" aria-hidden="true"></span>Last Race &mdash; {{ recap.raceName }}</div>
 
-        <!-- Last race recap, plain language + mini podium photos -->
-        <div class="dash-card dash-card-recap" *ngIf="recapSummary as summary">
-          <div class="dash-card-label">Last Race &mdash; {{ lastRaceRecap?.raceName }}</div>
-          <div class="recap-avatars">
-            <div class="recap-avatar clickable-driver" *ngFor="let podiumFinisher of lastRaceRecap?.podium"
-                 (click)="openDriver(podiumFinisher.driverId)"
-                 [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(podiumFinisher.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
-              <span class="recap-avatar-pos">P{{ podiumFinisher.position }}</span>
-              <img *ngIf="driverPhoto(podiumFinisher.driverId) as photo" [src]="photo"
-                   [alt]="podiumFinisher.givenName + ' ' + podiumFinisher.familyName" class="recap-avatar-photo">
+        <div class="result-board">
+          <div class="result-row clickable-driver" *ngFor="let f of recap.podium"
+               [class.result-row-winner]="f.position === 1"
+               (click)="openDriver(f.driverId)">
+            <span class="result-pos"
+                  [style.background]="f.position === 1 ? '#ffb700' : (f.position === 2 ? '#C7CEDB' : '#CD8A54')">
+              P{{ f.position }}
+            </span>
+            <div class="result-photo"
+                 [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(f.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+              <img *ngIf="driverPhoto(f.driverId) as photo" [src]="photo"
+                   [alt]="f.givenName + ' ' + f.familyName">
             </div>
+            <div class="result-name">
+              {{ f.givenName }} <strong>{{ f.familyName }}</strong>
+            </div>
+            <span class="result-team-swatch" [style.background]="teamColor(f.constructorId)" aria-hidden="true"></span>
           </div>
-          <p class="recap-text">{{ summary }}</p>
         </div>
 
-        <a class="dash-card dash-nudge" routerLink="/teams" *ngIf="!p.favoriteTeam">
-          <div class="dash-card-label">Not Following Anyone Yet?</div>
-          <p class="recap-text">Explore the grid and find a team to root for.</p>
-          <span class="dash-nudge-cta">Browse Teams &rarr;</span>
-        </a>
-
-        <div class="dash-card dash-teaser">
-          <div class="dash-card-label">Coming Soon</div>
-          <p class="recap-text">Predict race results and compete with friends on the leaderboard.</p>
-        </div>
-
+        <p class="rc-race-note" *ngIf="recapSummary as summary">{{ summary }}</p>
       </div>
 
     </div>
+
+    <!-- Second row: season narrative + driver spotlight -->
+    <div class="rc-grid rc-grid-row2">
+
+      <!-- Season so far, in plain language -->
+      <div class="rc-card rc-card-story" *ngIf="seasonStory as story">
+        <div class="rc-label"><span class="rc-label-bar" aria-hidden="true"></span>The Season So Far</div>
+        <p class="rc-story-text">{{ story }}</p>
+      </div>
+
+      <!-- Driver spotlight: rotates every visit -->
+      <div class="rc-card rc-card-spotlight" *ngIf="spotlightDriver as sd">
+        <div class="rc-label"><span class="rc-label-bar" aria-hidden="true"></span>Driver Spotlight</div>
+        <div class="spot-body clickable-driver" (click)="openDriver(sd.driverId)">
+          <div class="spot-photo"
+               [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(sd.constructorId) + ' 55%, var(--surface-2, #1A1E26)), var(--surface-2, #1A1E26) 85%)'">
+            <img *ngIf="driverPhoto(sd.driverId) as photo; else spotInitials" [src]="photo"
+                 [alt]="sd.givenName + ' ' + sd.familyName">
+            <ng-template #spotInitials><span class="spot-initials">{{ sd.givenName.charAt(0) }}{{ sd.familyName.charAt(0) }}</span></ng-template>
+          </div>
+          <div class="spot-info">
+            <div class="spot-name">{{ sd.givenName }} <strong>{{ sd.familyName }}</strong></div>
+            <div class="spot-team">
+              <span class="spot-swatch" [style.background]="teamColor(sd.constructorId)" aria-hidden="true"></span>
+              {{ sd.constructorName | teamName:sd.constructorId }}
+            </div>
+            <div class="spot-stats">
+              <span class="spot-stat"><strong>P{{ sd.position }}</strong> in championship</span>
+              <span class="spot-stat"><strong>{{ sd.points }}</strong> pts</span>
+              <span class="spot-stat" *ngIf="sd.wins > 0"><strong>{{ sd.wins }}</strong> {{ sd.wins === 1 ? 'win' : 'wins' }}</span>
+            </div>
+            <span class="spot-cta">Tap to see full profile &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pit boards: slim horizontal action strips -->
+    <div class="rc-strips">
+
+      <!-- Favorite team: pick CTA or picked state -->
+      <button type="button" class="rc-strip rc-strip-red rc-strip-btn" (click)="openFavoritePicker('team')">
+        <div class="rc-strip-body" *ngIf="!p.favoriteTeam; else teamPicked">
+          <div class="rc-strip-title">Pick Your Team</div>
+          <p class="rc-strip-text">Choose a team to root for all season.</p>
+        </div>
+        <ng-template #teamPicked>
+          <div class="rc-strip-body">
+            <div class="rc-strip-title"><span class="rc-fav-label">Your Team</span> {{ p.favoriteTeam }}</div>
+            <p class="rc-strip-text">Rooting for them every race weekend.</p>
+          </div>
+        </ng-template>
+        <span class="rc-strip-arrow" aria-hidden="true" *ngIf="!p.favoriteTeam">
+          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4 12h15m-6-6 6 6-6 6"/></svg>
+        </span>
+        <span class="rc-strip-change" *ngIf="p.favoriteTeam">Change</span>
+      </button>
+
+      <!-- Favorite driver: pick CTA or picked state -->
+      <button type="button" class="rc-strip rc-strip-red rc-strip-btn" (click)="openFavoritePicker('driver')">
+        <div class="rc-strip-body" *ngIf="!p.favoriteDriver; else driverPicked">
+          <div class="rc-strip-title">Pick Your Driver</div>
+          <p class="rc-strip-text">Choose the driver you'll cheer for.</p>
+        </div>
+        <ng-template #driverPicked>
+          <div class="rc-strip-body">
+            <div class="rc-strip-title"><span class="rc-fav-label">Your Driver</span> {{ p.favoriteDriver }}</div>
+            <p class="rc-strip-text">In their corner, lights out to flag.</p>
+          </div>
+        </ng-template>
+        <span class="rc-strip-arrow" aria-hidden="true" *ngIf="!p.favoriteDriver">
+          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4 12h15m-6-6 6 6-6 6"/></svg>
+        </span>
+        <span class="rc-strip-change" *ngIf="p.favoriteDriver">Change</span>
+      </button>
+
+      <div class="rc-strip rc-strip-gold">
+        <div class="rc-strip-body">
+          <div class="rc-strip-title">Predictions</div>
+          <p class="rc-strip-text">Predict race results and compete with friends on the leaderboard.</p>
+        </div>
+        <span class="rc-strip-badge">Coming Soon</span>
+      </div>
+    </div>
+
   </ng-container>
 
   <!-- ========== EXPERIENCED FAN ========== -->
-  <div class="dash-hero" *ngIf="!p.newToF1">
-    <span class="dash-stripe" aria-hidden="true"></span>
-    <h1 class="dash-title">Welcome back, {{ p.fullName }}</h1>
-    <p class="dash-subtitle" *ngIf="p.favoriteTeam">Following {{ p.favoriteTeam }}.</p>
-  </div>
+  <section class="rc-hero" *ngIf="!p.newToF1">
+    <div class="rc-hero-glow" aria-hidden="true"></div>
+    <div class="rc-hero-speedlines" aria-hidden="true"></div>
+    <div class="rc-hero-inner">
+      <div class="rc-hero-copy">
+        <h1 class="rc-title">Welcome back, <span class="rc-title-name">{{ p.fullName }}</span></h1>
+        <p class="rc-sub" *ngIf="p.favoriteTeam">Following {{ p.favoriteTeam }}.</p>
+      </div>
+    </div>
+    <div class="rc-checker" aria-hidden="true"></div>
+  </section>
 
 </ng-container>

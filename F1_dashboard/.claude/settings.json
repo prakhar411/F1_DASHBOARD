@@ -152,7 +152,22 @@
       "Bash(taskkill //PID 4004 //F)",
       "Bash(NODE_PATH=\"C:\\\\Users\\\\prakhar\\\\AppData\\\\Local/npm-cache/_npx/e41f203b7505f1fb/node_modules\" node \"C:\\\\Users\\\\prakhar\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--Duo-Projects-F1-DASHBOARD-F1-dashboard\\\\01eb14ee-06a3-4697-8492-8b0a4d5b78d5\\\\scratchpad\\\\shot_v2.js\")",
       "Bash(taskkill //PID 29284 //F)",
-      "Bash(taskkill //PID 27484 //F)"
+      "Bash(taskkill //PID 27484 //F)",
+      "Bash(python \"C:/Users/prakhar/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.11.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"F1 racing fan dashboard dark immersive eye-catching\" --design-system --variance 8 --motion 6 --density 5)",
+      "Bash(python \"C:/Users/prakhar/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.11.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"sports leaderboard ranking list dark\" --domain ux -n 5)",
+      "Bash(python \"C:/Users/prakhar/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.11.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"player profile card stats overlay\" --domain style -n 5)",
+      "Bash(ls \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/controller\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/service\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/repository\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/dto/response\" 2>&1)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/repository/**)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/**)",
+      "Bash(ls \"C:/Users/prakhar/.claude/projects/d--Duo-Projects-F1-DASHBOARD/memory/\" 2>/dev/null && cat \"C:/Users/prakhar/.claude/projects/d--Duo-Projects-F1-DASHBOARD/memory/MEMORY.md\" 2>/dev/null)",
+      "Read(//c/Users/prakhar/.claude/projects/d--Duo-Projects-F1-DASHBOARD/memory/**)",
+      "Bash(ls \"C:/Users/prakhar/.claude/projects/d--Duo-Projects-F1-DASHBOARD-F1-dashboard/memory/\" 2>/dev/null; echo ---; ls \"C:/Users/prakhar/.claude/projects/\" 2>/dev/null | head)",
+      "Read(//c/Users/prakhar/.claude/projects/**)",
+      "Bash(python \"C:/Users/prakhar/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.11.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"educational glossary learning content beginner onboarding\" --design-system --variance 7 --motion 5 --density 5)",
+      "Bash(cat \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/service/ProfileService.java\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/service/impl/ProfileServiceImpl.java\" \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/dto/response/ProfileDto.java\")",
+      "Bash(ls \"d:/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/dto/request\")",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/dto/request/**)",
+      "Read(//d/Duo-Projects/F1_DASHBOARD/backend/src/main/java/com/f1dashboard/backend/**)"
     ],
     "additionalDirectories": [
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\response",
@@ -167,7 +182,8 @@
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\resources",
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\config",
       "d:\\Duo-Projects\\F1_DASHBOARD\\backend",
-      "C:\\Users\\prakhar\\.claude\\projects\\d--Duo-Projects-F1-DASHBOARD-F1-dashboard\\memory"
+      "C:\\Users\\prakhar\\.claude\\projects\\d--Duo-Projects-F1-DASHBOARD-F1-dashboard\\memory",
+      "d:\\Duo-Projects\\F1_DASHBOARD\\backend\\src\\main\\java\\com\\f1dashboard\\backend\\dto\\request"
     ]
   }
 }

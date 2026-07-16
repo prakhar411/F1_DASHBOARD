@@ -1,9 +1,12 @@
 package com.f1dashboard.backend.controller;
 
+import com.f1dashboard.backend.dto.request.UpdateFavoritesRequestDto;
 import com.f1dashboard.backend.dto.response.ProfileDto;
 import com.f1dashboard.backend.service.ProfileService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +22,15 @@ public class ProfileController {
 
     @GetMapping("/me")
     public ProfileDto me() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return profileService.getProfile(email);
+        return profileService.getProfile(currentEmail());
+    }
+
+    @PatchMapping("/favorites")
+    public ProfileDto updateFavorites(@RequestBody UpdateFavoritesRequestDto request) {
+        return profileService.updateFavorites(currentEmail(), request);
+    }
+
+    private String currentEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

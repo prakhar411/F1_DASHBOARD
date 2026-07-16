@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Driver, DriverService } from '../../core/services/driver.service';
 import { teamColor } from '../../core/constants/team-colors';
+import { driverPhoto } from '../../core/constants/driver-photos';
 import { DriverDetailModalComponent } from '../../shared/driver-detail-modal/driver-detail-modal.component';
 
 @Component({
@@ -15,7 +16,9 @@ export class DriversComponent implements OnInit {
   formerDrivers: Driver[] = [];
   loading = true;
   searchTerm = '';
+  activeTab: 'current' | 'former' = 'current';
   teamColor = teamColor;
+  driverPhoto = driverPhoto;
 
   constructor(private driverService: DriverService, private modalService: NgbModal) { }
 

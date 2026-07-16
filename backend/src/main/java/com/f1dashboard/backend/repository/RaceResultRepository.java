@@ -26,4 +26,10 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
             + "LEFT JOIN FETCH rr.constructor "
             + "WHERE rr.driver.driverId = :driverId ORDER BY rr.race.raceDate DESC")
     List<RaceResult> findByDriverOrderByRaceDateDesc(@Param("driverId") String driverId);
+
+    @Query("SELECT rr FROM RaceResult rr "
+            + "JOIN FETCH rr.race "
+            + "JOIN FETCH rr.driver "
+            + "WHERE rr.race.season = :season AND rr.position = 1")
+    List<RaceResult> findWinnersBySeason(@Param("season") Integer season);
 }

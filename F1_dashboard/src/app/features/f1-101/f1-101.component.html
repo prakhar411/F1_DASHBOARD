@@ -1,0 +1,183 @@
+<!-- Reusable term card: category art watermark, accent tint, read tracking -->
+<ng-template #termCard let-e="e" let-i="i">
+  <div class="pb-card" [class.pb-card-read]="isRead(e.id)"
+       [style.--cat-color]="entryAccent(e)"
+       [style.animation-delay.ms]="(i % 12) * 35">
+
+    <span class="pb-card-art" aria-hidden="true" [ngSwitch]="e.category">
+      <!-- weekend: stopwatch -->
+      <svg *ngSwitchCase="'weekend'" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 6V4M10 3h4M12 13l3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <!-- scoring: trophy -->
+      <svg *ngSwitchCase="'scoring'" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0V4ZM7 5H4a3 3 0 0 0 3 3M17 5h3a3 3 0 0 1-3 3M12 13v3M9 20h6M10.5 16h3v4h-3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- flags: waving flag -->
+      <svg *ngSwitchCase="'flags'" viewBox="0 0 24 24"><path d="M5 21V3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 4c3-1.6 5 1.6 8 0s4-1 6 0v8.5c-2-1-3-1.5-6 0s-5-1.6-8 0z" fill="currentColor" opacity="0.85"/></svg>
+      <!-- safety: shield -->
+      <svg *ngSwitchCase="'safety'" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8v4M12 15h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <!-- tyres: tyre -->
+      <svg *ngSwitchCase="'tyres'" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.4 6.4l2.1 2.1M15.5 15.5l2.1 2.1M17.6 6.4l-2.1 2.1M8.5 15.5l-2.1 2.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <!-- pits: wrench -->
+      <svg *ngSwitchCase="'pits'" viewBox="0 0 24 24"><path d="M20.5 7.3a5 5 0 0 1-6.6 6L8 19.2a2 2 0 0 1-2.9-2.9L11 10.4a5 5 0 0 1 6-6.6L14.4 6.4l3.2 3.2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <!-- aero: wind lines -->
+      <svg *ngSwitchCase="'aero'" viewBox="0 0 24 24"><path d="M3 8h9a3 3 0 1 0-3-3M3 12h13a3 3 0 1 1-3 3M3 16h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <!-- track: winding road -->
+      <svg *ngSwitchCase="'track'" viewBox="0 0 24 24"><path d="M4 21c9 0 3-17 12-17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 21c9 0 3-17 12-17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/></svg>
+      <!-- penalties: warning triangle -->
+      <svg *ngSwitchCase="'penalties'" viewBox="0 0 24 24"><path d="M12 4 21 19H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4M12 16.6h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <!-- rules2026: bolt -->
+      <svg *ngSwitchCase="'rules2026'" viewBox="0 0 24 24"><path d="M13 3 5 13.5h5L9 21l8-11.5h-5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <!-- misc: hash -->
+      <svg *ngSwitchDefault viewBox="0 0 24 24"><path d="M9 4 7 20M17 4l-2 16M5 9h15M4 15h15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
+
+    <div class="pb-card-head">
+      <span class="pb-cat-tag">{{ category(e.category)?.label }}</span>
+      <span class="pb-badge-2026" *ngIf="e.is2026">2026</span>
+    </div>
+
+    <h3 class="pb-term">{{ e.title }}</h3>
+    <p class="pb-text">{{ lang === 'hi' ? e.hi : e.en }}</p>
+
+    <button type="button" class="pb-gotit" (click)="toggleRead(e.id, $event)"
+            [attr.aria-pressed]="isRead(e.id)">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ isRead(e.id) ? 'Learned' : 'Got it' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Pit Briefing hero -->
+<section class="pb-hero" *ngIf="progress.level$ | async as lvl">
+  <div class="pb-hero-speedlines" aria-hidden="true"></div>
+  <div class="pb-hero-inner">
+    <div class="pb-hero-copy">
+      <span class="pb-kicker">Pit Briefing</span>
+      <h1 class="pb-title">F1 <span class="pb-title-accent">101</span></h1>
+      <p class="pb-sub">From Karting to World Champion — learn F1 stage by stage. Padho English me ya Hinglish me.</p>
+
+      <div class="pb-level-row">
+        <span class="pb-level-badge" [class.pb-level-certified]="lvl.certified">
+          {{ lvl.certified ? 'Certified Race Fan' : 'Level ' + lvl.levelNumber + ' · ' + lvl.ladder }}
+        </span>
+        <div class="pb-progress">
+          <div class="pb-progress-track">
+            <div class="pb-progress-fill" [style.width.%]="lvl.pct"></div>
+          </div>
+          <span class="pb-progress-label">{{ lvl.readCount }}/{{ lvl.totalCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-hero-controls">
+      <div class="seg-control" role="tablist" aria-label="View">
+        <button type="button" class="seg-btn" role="tab"
+                [class.active]="view === 'journey'" [attr.aria-selected]="view === 'journey'"
+                (click)="view = 'journey'">Journey</button>
+        <button type="button" class="seg-btn" role="tab"
+                [class.active]="view === 'glossary'" [attr.aria-selected]="view === 'glossary'"
+                (click)="view = 'glossary'">Glossary</button>
+      </div>
+      <div class="seg-control" role="tablist" aria-label="Language">
+        <button type="button" class="seg-btn" role="tab"
+                [class.active]="lang === 'en'" [attr.aria-selected]="lang === 'en'"
+                (click)="setLang('en')">English</button>
+        <button type="button" class="seg-btn" role="tab"
+                [class.active]="lang === 'hi'" [attr.aria-selected]="lang === 'hi'"
+                (click)="setLang('hi')">Hinglish</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== JOURNEY VIEW: the licence path ==================== -->
+<div class="pb-path" *ngIf="view === 'journey'">
+  <div class="pb-stage" *ngFor="let t of tiers; let i = index"
+       [class.stage-complete]="tierComplete(t)"
+       [class.stage-current]="isCurrent(i)"
+       [class.stage-locked]="isLocked(i)">
+
+    <!-- Path rail + node -->
+    <div class="pb-stage-rail" aria-hidden="true">
+      <span class="pb-node">
+        <svg *ngIf="tierComplete(t); else nodeNum" viewBox="0 0 16 16">
+          <path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <ng-template #nodeNum>{{ t.level }}</ng-template>
+      </span>
+    </div>
+
+    <div class="pb-stage-content">
+      <div class="pb-stage-head">
+        <div class="pb-stage-meta">
+          <span class="pb-stage-ladder">Level {{ t.level }} &middot; {{ t.ladder }}</span>
+          <h2 class="pb-stage-title">{{ t.title }}</h2>
+          <p class="pb-stage-sub">{{ t.subtitle }}</p>
+        </div>
+        <div class="pb-stage-progress">
+          <span class="pb-stage-count">{{ tierDone(t) }}/{{ t.entryIds.length }}</span>
+          <span class="pb-stage-track"><span class="pb-stage-fill" [style.width.%]="tierPct(t)"></span></span>
+          <span class="pb-stage-done-badge" *ngIf="tierComplete(t)">Stage Complete</span>
+        </div>
+      </div>
+
+      <!-- Soft lock: collapsed until previous stage is done, but can be forced open -->
+      <div class="pb-locked" *ngIf="isLocked(i); else stageCards">
+        <svg class="pb-lock-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <p class="pb-locked-text">Complete the previous stage to unlock this one.</p>
+        <button type="button" class="pb-locked-btn" (click)="forceOpen(i)">Open anyway</button>
+      </div>
+
+      <ng-template #stageCards>
+        <div class="pb-grid">
+          <ng-container *ngFor="let e of entriesFor(t); let j = index; trackBy: trackById">
+            <ng-container *ngTemplateOutlet="termCard; context: { e: e, i: j }"></ng-container>
+          </ng-container>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="pb-finish" *ngIf="(progress.level$ | async)?.certified">
+    <span class="pb-finish-checker" aria-hidden="true"></span>
+    <h2 class="pb-finish-title">Certified Race Fan</h2>
+    <p class="pb-finish-sub">Tumne poora path complete kar liya — ab race weekend tumhare liye open book hai. 🏁</p>
+  </div>
+</div>
+
+<!-- ==================== GLOSSARY VIEW: search + category filter ==================== -->
+<div *ngIf="view === 'glossary'">
+  <div class="pb-controls">
+    <input type="search" class="form-control pb-search"
+           placeholder="Search a term — e.g. undercut, safety car, DRS…"
+           [(ngModel)]="searchTerm">
+
+    <div class="pb-chip-rail" role="tablist" aria-label="Categories">
+      <button type="button" class="pb-chip" role="tab"
+              [class.active]="activeCategory === 'all'" [attr.aria-selected]="activeCategory === 'all'"
+              (click)="activeCategory = 'all'">
+        All <span class="pb-chip-count">{{ entries.length }}</span>
+      </button>
+      <button type="button" class="pb-chip" role="tab" *ngFor="let c of categories"
+              [class.active]="activeCategory === c.id" [attr.aria-selected]="activeCategory === c.id"
+              [style.--chip-color]="c.color"
+              (click)="activeCategory = c.id">
+        <span class="pb-chip-dot" [style.background]="c.color" aria-hidden="true"></span>
+        {{ c.label }} <span class="pb-chip-count">{{ countFor(c.id) }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="pb-grid" *ngIf="filteredEntries.length; else noResults">
+    <ng-container *ngFor="let e of filteredEntries; let i = index; trackBy: trackById">
+      <ng-container *ngTemplateOutlet="termCard; context: { e: e, i: i }"></ng-container>
+    </ng-container>
+  </div>
+
+  <ng-template #noResults>
+    <p class="text-muted pb-empty">No terms match "{{ searchTerm }}". Try a different word.</p>
+  </ng-template>
+</div>

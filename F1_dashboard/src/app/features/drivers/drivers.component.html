@@ -1,72 +1,71 @@
-<h1 class="mb-4">Drivers</h1>
+<div class="page-head">
+  <h1 class="page-title"><span class="page-title-bar" aria-hidden="true"></span>Drivers</h1>
+
+  <div class="seg-control" role="tablist" aria-label="Driver era">
+    <button type="button" class="seg-btn" role="tab"
+            [class.active]="activeTab === 'current'" [attr.aria-selected]="activeTab === 'current'"
+            (click)="activeTab = 'current'">Current Grid <span class="seg-count">{{ currentDrivers.length }}</span></button>
+    <button type="button" class="seg-btn" role="tab"
+            [class.active]="activeTab === 'former'" [attr.aria-selected]="activeTab === 'former'"
+            (click)="activeTab = 'former'">Former <span class="seg-count">{{ formerDrivers.length }}</span></button>
+  </div>
+</div>
 
 <div *ngIf="loading" class="text-muted">Loading drivers&hellip;</div>
 
-<div *ngIf="!loading">
-  <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs mb-4">
+<!-- ===== Current grid: trading cards ===== -->
+<div class="dgrid" *ngIf="!loading && activeTab === 'current'">
+  <div class="dcard clickable-driver" *ngFor="let d of currentDrivers; let i = index"
+       [style.animation-delay.ms]="i * 40"
+       (click)="openDriver(d.driverId)">
 
-    <li [ngbNavItem]="1">
-      <a ngbNavLink>Current Grid <span class="tab-count">{{ currentDrivers.length }}</span></a>
-      <ng-template ngbNavContent>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-          <div class="col" *ngFor="let d of currentDrivers">
-            <div class="card h-100 team-accent clickable-driver" (click)="openDriver(d.driverId)"
-                 [style.border-left-color]="teamColor(d.constructorId)">
-              <div class="card-body d-flex gap-3">
-                <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
-                                    [constructorId]="d.constructorId" [size]="56"></app-driver-avatar>
-                <div class="flex-grow-1">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <h5 class="card-title mb-1">{{ d.givenName }} {{ d.familyName }}</h5>
-                    <span class="badge bg-danger" *ngIf="d.permanentNumber">#{{ d.permanentNumber }}</span>
-                  </div>
-                  <div class="d-flex align-items-center gap-2 mb-1" *ngIf="d.constructorName">
-                    <app-team-badge [constructorId]="d.constructorId" [name]="d.constructorName" [size]="22"></app-team-badge>
-                    <span class="text-secondary">{{ d.constructorName | teamName:d.constructorId }}</span>
-                  </div>
-                  <p class="text-muted mb-1" *ngIf="d.code">{{ d.code }}</p>
-                  <p class="card-text mb-0" *ngIf="d.nationality">{{ d.nationality }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="dcard-top"
+         [style.background]="'linear-gradient(160deg, color-mix(in srgb, ' + teamColor(d.constructorId) + ' 60%, #14141a), #14141a 90%)'">
+      <span class="dcard-num" *ngIf="d.permanentNumber" aria-hidden="true">{{ d.permanentNumber }}</span>
+      <img *ngIf="driverPhoto(d.driverId) as photo; else dcInitials" [src]="photo"
+           [alt]="d.givenName + ' ' + d.familyName" class="dcard-photo">
+      <ng-template #dcInitials>
+        <span class="dcard-initials">{{ d.givenName.charAt(0) }}{{ d.familyName.charAt(0) }}</span>
       </ng-template>
-    </li>
+      <span class="dcard-code" *ngIf="d.code">{{ d.code }}</span>
+    </div>
 
-    <li [ngbNavItem]="2">
-      <a ngbNavLink>Former Drivers <span class="tab-count">{{ formerDrivers.length }}</span></a>
-      <ng-template ngbNavContent>
-        <p class="text-muted small mb-3">Every driver who raced in Formula 1 between 2000 and 2025. Click any driver for career stats.</p>
+    <div class="dcard-body">
+      <div class="dcard-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+      <div class="dcard-team" *ngIf="d.constructorName">
+        <span class="dcard-swatch" [style.background]="teamColor(d.constructorId)" aria-hidden="true"></span>
+        {{ d.constructorName | teamName:d.constructorId }}
+      </div>
+      <div class="dcard-meta">
+        <span *ngIf="d.nationality">{{ d.nationality }}</span>
+        <span *ngIf="d.dateOfBirth">&middot; b. {{ d.dateOfBirth | date:'yyyy' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <input type="search" class="form-control former-search mb-4"
-               placeholder="Search by name or nationality — e.g. Schumacher, Vettel, Finnish…"
-               [(ngModel)]="searchTerm">
+<!-- ===== Former drivers: searchable compact list ===== -->
+<div *ngIf="!loading && activeTab === 'former'">
+  <p class="text-muted small mb-3">Every driver who raced in Formula 1 between 2000 and 2025. Click any driver for career stats.</p>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3" *ngIf="filteredFormerDrivers.length; else noMatch">
-          <div class="col" *ngFor="let d of filteredFormerDrivers">
-            <div class="card h-100 former-card clickable-driver" (click)="openDriver(d.driverId)">
-              <div class="card-body d-flex gap-3 align-items-center">
-                <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
-                                    [constructorId]="null" [size]="44"></app-driver-avatar>
-                <div>
-                  <h6 class="card-title mb-0">{{ d.givenName }} {{ d.familyName }}</h6>
-                  <small class="text-muted">
-                    {{ d.nationality || '' }}<ng-container *ngIf="d.dateOfBirth"> &middot; b. {{ d.dateOfBirth | date:'yyyy' }}</ng-container>
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <input type="search" class="form-control former-search mb-4"
+         placeholder="Search by name or nationality — e.g. Schumacher, Vettel, Finnish…"
+         [(ngModel)]="searchTerm">
 
-        <ng-template #noMatch>
-          <p class="text-muted">No drivers match "{{ searchTerm }}".</p>
-        </ng-template>
-      </ng-template>
-    </li>
+  <div class="fgrid" *ngIf="filteredFormerDrivers.length; else noMatch">
+    <div class="fcard clickable-driver" *ngFor="let d of filteredFormerDrivers" (click)="openDriver(d.driverId)">
+      <app-driver-avatar [driverId]="d.driverId" [givenName]="d.givenName" [familyName]="d.familyName"
+                          [constructorId]="null" [size]="42"></app-driver-avatar>
+      <div class="fcard-info">
+        <div class="fcard-name">{{ d.givenName }} <strong>{{ d.familyName }}</strong></div>
+        <small class="fcard-meta">
+          {{ d.nationality || '' }}<ng-container *ngIf="d.dateOfBirth"> &middot; b. {{ d.dateOfBirth | date:'yyyy' }}</ng-container>
+        </small>
+      </div>
+    </div>
+  </div>
 
-  </ul>
-
-  <div [ngbNavOutlet]="nav"></div>
+  <ng-template #noMatch>
+    <p class="text-muted">No drivers match "{{ searchTerm }}".</p>
+  </ng-template>
 </div>
